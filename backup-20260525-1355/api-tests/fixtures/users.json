@@ -1,0 +1,27 @@
+{
+  "validAdmin": {
+    "email": "admin@juice-sh.op",
+    "password": "admin123"
+  },
+  "validUser": {
+    "email": "test@juice-sh.op",
+    "password": "password123"
+  },
+  "newUser": {
+    "email": "newuser{{timestamp}}@test.com",
+    "password": "NewUser123!",
+    "passwordRepeat": "NewUser123!",
+    "securityQuestion": {
+      "id": 1,
+      "answer": "Test"
+    }
+  },
+  "invalidUser": {
+    "email": "invalid@test.com",
+    "password": "wrongpassword"
+  },
+  "lockedUser": {
+    "email": "locked_out@juice-sh.op",
+    "password": "locked_out123"
+  }
+}
