@@ -29,8 +29,7 @@ jobs:
     
     - name: Start Juice Shop Server
       run: |
-        npm install -g @juice-shop/juice-shop
-        juice-shop &
+        docker run -d -p 3000:3000 bkimminich/juice-shop
         echo "Waiting for server to start..."
         sleep 30
         curl -f http://localhost:3000 || exit 1
