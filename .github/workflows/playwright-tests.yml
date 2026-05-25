@@ -27,6 +27,14 @@ jobs:
       working-directory: ./test-portfolio/ui-tests2
       run: npx playwright install --with-deps
     
+    - name: Start Juice Shop Server
+      run: |
+        npm install -g @juice-shop/juice-shop
+        juice-shop &
+        echo "Waiting for server to start..."
+        sleep 30
+        curl -f http://localhost:3000 || exit 1
+    
     - name: Run Playwright Tests
       working-directory: ./test-portfolio/ui-tests2
       run: npx playwright test
