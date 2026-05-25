@@ -1,0 +1,25 @@
+# Juice Shop repository (embedded git)
+juice-shop/
+juice-shop-prebuilt/
+
+# Test results
+test-results/
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build tools
+vs_BuildTools.exe
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

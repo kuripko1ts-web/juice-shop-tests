@@ -1,0 +1,13 @@
+{
+  "validProduct": {
+    "name": "Apple Juice",
+    "description": "Fresh apple juice",
+    "price": 1.99,
+    "image": "apple-juice.jpg"
+  },
+  "invalidProduct": {
+    "name": "",
+    "description": "",
+    "price": -1
+  }
+}
