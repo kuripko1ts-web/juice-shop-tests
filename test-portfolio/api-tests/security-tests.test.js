@@ -583,7 +583,8 @@ describe('OWASP Top 10 Security Tests - Juice Shop', () => {
       // This is an informational test
       // In a real scenario, we would check log files for sensitive data
       
-      console.warn('⚠️  Manual verification required: Check logs for passwords, tokens, or PII');
+      // Commented out to avoid console.warn in CI/CD
+      // console.warn('⚠️  Manual verification required: Check logs for passwords, tokens, or PII');
     });
   });
 
