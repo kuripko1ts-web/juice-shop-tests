@@ -206,9 +206,10 @@ describe('Product Search API Tests - /rest/products/search', () => {
       
       // Juice Shop is intentionally vulnerable, SQL injection causes server error
       // In a secure app, this should fail gracefully or return no results
-      if (response.status === 500) {
-        console.warn('⚠️  SQL injection caused server error (expected for vulnerable Juice Shop)');
-      }
+      // Commented out to avoid console.warn in CI/CD
+      // if (response.status === 500) {
+      //   console.warn('⚠️  SQL injection caused server error (expected for vulnerable Juice Shop)');
+      // }
       expect(response.status).toBeGreaterThanOrEqual(200);
       expect(response.data).toBeDefined();
     });
@@ -221,9 +222,10 @@ describe('Product Search API Tests - /rest/products/search', () => {
       });
       
       // Juice Shop is intentionally vulnerable, SQL injection causes server error
-      if (response.status === 500) {
-        console.warn('⚠️  SQL UNION injection caused server error (expected for vulnerable Juice Shop)');
-      }
+      // Commented out to avoid console.warn in CI/CD
+      // if (response.status === 500) {
+      //   console.warn('⚠️  SQL UNION injection caused server error (expected for vulnerable Juice Shop)');
+      // }
       expect(response.status).toBeGreaterThanOrEqual(200);
       expect(response.data).toBeDefined();
     });
@@ -239,12 +241,13 @@ describe('Product Search API Tests - /rest/products/search', () => {
       expect(response.data).toBeDefined();
       
       // Check if XSS payload is reflected unsanitized
-      if (response.status === 200 && response.data.data) {
-        const responseString = JSON.stringify(response.data);
-        if (responseString.includes('<script>') || responseString.includes('onerror=')) {
-          console.warn('⚠️  XSS payload reflected unsanitized (expected for vulnerable Juice Shop)');
-        }
-      }
+      // Commented out to avoid console.warn in CI/CD
+      // if (response.status === 200 && response.data.data) {
+      //   const responseString = JSON.stringify(response.data);
+      //   if (responseString.includes('<script>') || responseString.includes('onerror=')) {
+      //     console.warn('⚠️  XSS payload reflected unsanitized (expected for vulnerable Juice Shop)');
+      //   }
+      // }
     });
 
     // Test 16: XSS with img tag - checks if server sanitizes img-based XSS
@@ -258,12 +261,13 @@ describe('Product Search API Tests - /rest/products/search', () => {
       expect(response.data).toBeDefined();
       
       // Check if XSS payload is reflected unsanitized
-      if (response.status === 200 && response.data.data) {
-        const responseString = JSON.stringify(response.data);
-        if (responseString.includes('onerror=')) {
-          console.warn('⚠️  XSS img tag payload reflected unsanitized (expected for vulnerable Juice Shop)');
-        }
-      }
+      // Commented out to avoid console.warn in CI/CD
+      // if (response.status === 200 && response.data.data) {
+      //   const responseString = JSON.stringify(response.data);
+      //   if (responseString.includes('onerror=')) {
+      //     console.warn('⚠️  XSS img tag payload reflected unsanitized (expected for vulnerable Juice Shop)');
+      //   }
+      // }
     });
 
     // Test 17: NoSQL injection in search - checks if server prevents NoSQL injection
@@ -332,9 +336,10 @@ describe('Product Search API Tests - /rest/products/search', () => {
       });
       
       // SQL special characters might cause server error in Juice Shop
-      if (response.status === 500) {
-        console.warn('⚠️  SQL special characters caused server error (expected for vulnerable Juice Shop)');
-      }
+      // Commented out to avoid console.warn in CI/CD
+      // if (response.status === 500) {
+      //   console.warn('⚠️  SQL special characters caused server error (expected for vulnerable Juice Shop)');
+      // }
       expect(response.status).toBeGreaterThanOrEqual(200);
       expect(response.data).toBeDefined();
     });
