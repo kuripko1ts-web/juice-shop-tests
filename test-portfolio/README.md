@@ -20,22 +20,33 @@ test-portfolio/
 ├── .github/
 │   └── workflows/           # GitHub Actions workflows
 │       ├── api-tests.yml    # Workflow для API тестів
-│       └── ui-tests.yml     # Workflow для UI тестів
+│       └── playwright-tests.yml # Workflow для UI тестів (Playwright)
 ├── api-tests/               # API тести
 │   ├── api-tests.js         # Основний файл з тестами
+│   ├── api-tests.test.js    # OWASP Juice Shop API тести
+│   ├── security-tests.test.js # OWASP Top 10 Security тести
+│   ├── search-tests.test.js  # Product Search API тести
+│   ├── negative-tests.test.js # Negative API тести
+│   ├── fixtures/            # Тестові дані
+│   │   └── users.json       # Користувачі для тестів
+│   ├── helpers/             # Helper функції
+│   │   └── api-client.js    # API client
 │   ├── package.json         # Залежності API тестів
 │   └── test-results/        # Результати API тестів
 ├── ui-tests2/               # UI тести (Playwright)
 │   ├── pages/               # Page Object Model
 │   │   ├── BasePage.js      # Базова сторінка
 │   │   ├── LoginPage.js     # Сторінка логіну
-│   │   └── CartPage.js      # Сторінка кошика
+│   │   ├── CartPage.js      # Сторінка кошика
+│   │   └── RegistrationPage.js # Сторінка реєстрації
 │   ├── testData/            # Тестові дані
 │   │   └── credentials.js   # Логіни/паролі
 │   ├── utils/               # Утиліти
 │   │   └── logger.js        # Логування
 │   ├── smoke.spec.js        # Smoke тести
 │   ├── reg.spec.js          # Регресійні тести
+│   ├── registration.spec.js # Реєстрація тести
+│   ├── integrated-user-lifecycle.spec.js # Інтегровані тести
 │   ├── playwright.config.js # Конфігурація Playwright
 │   ├── package.json         # Залежності UI тестів
 │   ├── playwright-report/   # HTML звіти Playwright
@@ -56,18 +67,36 @@ test-portfolio/
 
 Тестування REST API Juice Shop:
 
-**Критичні функції:**
+**Основні API тести (api-tests.test.js):**
 - ✅ Аутентифікація та авторизація
 - ✅ CRUD операції з продуктами
 - ✅ Кошик покупок
 - ✅ Замовлення
 - ✅ Отримання інформації про користувача
 
-**Вразливості API:**
-- SQL Injection
-- XSS
-- Broken Authentication
-- Sensitive Data Exposure
+**OWASP Top 10 Security тести (security-tests.test.js):**
+- ✅ A01: Broken Access Control
+- ✅ A02: Cryptographic Failures
+- ✅ A03: Injection (SQL/NoSQL/XSS)
+- ✅ A04: Insecure Design
+- ✅ A05: Security Misconfiguration
+- ✅ A07: Identification and Authentication Failures
+- ✅ A08: Software and Data Integrity Failures
+- ✅ A09: Security Logging and Monitoring Failures
+- ✅ A10: Server-Side Request Forgery (SSRF)
+
+**Product Search API тести (search-tests.test.js):**
+- ✅ Валідні пошукові запити
+- ✅ Порожні та null запити
+- ✅ Спеціальні символи та Unicode
+- ✅ Ін'єкційні атаки (SQL, XSS, NoSQL, Command)
+- ✅ Крайові випадки та обмеження довжини
+
+**Negative API тести (negative-tests.test.js):**
+- ✅ Невалідні дані реєстрації
+- ✅ Невалідні дані логіну
+- ✅ Невалідні дані feedback
+- ✅ XSS та SQL ін'єкції в полях форм
 
 ## 🎨 UI Тести
 
@@ -86,17 +115,31 @@ test-portfolio/
 - ✅ Перевірка One-Day Delivery
 - ✅ Перевірка кошика з кількома товарами
 
+**Registration Тести (registration.spec.js):**
+- ✅ Реєстрація з валідними даними
+- ✅ Реєстрація з невалідними даними
+- ✅ Валідація полів форми (email, password, security question)
+- ✅ Перевірка відключення кнопки при невалідних даних
+- ✅ XSS та SQL ін'єкції в полях реєстрації
+
+**Інтегровані тести (integrated-user-lifecycle.spec.js):**
+- ✅ Створення користувача через API
+- ✅ Логін через UI
+- ✅ Повний життєвий цикл користувача
+
 **Page Object Model:**
 - `BasePage.js` - базові методи для всіх сторінок
 - `LoginPage.js` - сторінка аутентифікації
 - `CartPage.js` - сторінка кошика покупок
+- `RegistrationPage.js` - сторінка реєстрації
 
 ## 🛠 Технології
 
 ### API Тести
-- **Runtime:** Node.js 18+
-- **Framework:** REST API testing
-- **Reporting:** JSON logs
+- **Runtime:** Node.js 20+
+- **Framework:** Jest
+- **HTTP Client:** Axios
+- **Reporting:** JSON logs, coverage reports
 
 ### UI Тести
 - **Runtime:** Node.js 18+
@@ -221,4 +264,4 @@ OWASP Juice Shop - найсучасніше вразливе веб-додато
 
 ---
 
-**GitHub Repository:** https://github.com/kuripko1ts-web/juice-shop_test_portfolio
+**GitHub Repository:** https://github.com/kuripko1ts-web/juice-shop-tests
