@@ -1,0 +1,43 @@
+name: API Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install dependencies
+      working-directory: ./test-portfolio/api-tests
+      run: npm install
+    
+    - name: Start Juice Shop Server
+      run: |
+        docker run -d -p 3000:3000 bkimminich/juice-shop
+        echo "Waiting for server to start..."
+        sleep 30
+        curl -f http://localhost:3000 || exit 1
+    
+    - name: Run API Tests
+      working-directory: ./test-portfolio/api-tests
+      run: npm test
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-test-results
+        path: test-portfolio/api-tests/coverage/
+        retention-days: 30
