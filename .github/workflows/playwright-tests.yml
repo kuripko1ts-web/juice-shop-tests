@@ -21,7 +21,7 @@ jobs:
     
     - name: Install dependencies
       working-directory: ./test-portfolio/ui-tests2
-      run: npm ci
+      run: npm install
     
     - name: Install Playwright Browsers
       working-directory: ./test-portfolio/ui-tests2
@@ -30,7 +30,7 @@ jobs:
     - name: Start Juice Shop Server
       working-directory: ./juice-shop
       run: |
-        npm ci
+        npm install
         npm start &
         echo "Waiting for server to start..."
         sleep 30
