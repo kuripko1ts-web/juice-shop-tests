@@ -36,7 +36,7 @@ jobs:
     
     - name: Run Playwright Tests
       working-directory: ./test-portfolio/ui-tests2
-      run: npx playwright test
+      run: npx playwright test --reporter=list
     
     - name: Upload test results
       if: always()
