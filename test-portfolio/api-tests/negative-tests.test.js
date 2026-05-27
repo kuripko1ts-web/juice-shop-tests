@@ -11,16 +11,16 @@ const BASE_URL = 'http://localhost:3000';
 // Create API client
 const createAPIClient = (token = null) => {
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   };
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
-  
+
   return axios.create({
     baseURL: BASE_URL,
     headers: headers,
-    validateStatus: () => true // Don't throw on any status code
+    validateStatus: () => true, // Don't throw on any status code
   });
 };
 
@@ -36,14 +36,13 @@ describe('Negative API Tests - Invalid Data', () => {
   // NEGATIVE TESTS - USER REGISTRATION (POST /api/Users)
   // ============================================
   describe('POST /api/Users - Invalid Registration Data', () => {
-    
     // Invalid email tests
     // Test 1: Missing email field - checks if server validates required email field
     test('should reject registration with missing email', async () => {
       const userData = {
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       // Juice Shop might accept registration without email (vulnerability)
@@ -63,7 +62,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: '',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -76,7 +75,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'invalid-email',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       // Juice Shop accepts invalid email (vulnerability)
@@ -91,7 +90,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'a'.repeat(300) + '@test.com',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       // Juice Shop accepts extremely long email (vulnerability)
@@ -105,7 +104,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject registration with missing password', async () => {
       const userData = {
         email: 'test@test.com',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       // Juice Shop accepts registration without password (vulnerability)
@@ -120,7 +119,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'test@test.com',
         password: '',
         passwordRepeat: '',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -133,7 +132,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'test@test.com',
         password: 'a',
         passwordRepeat: 'a',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -146,7 +145,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'test@test.com',
         password: 'a'.repeat(1001),
         passwordRepeat: 'a'.repeat(1001),
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -159,7 +158,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const userData = {
         email: 'test@test.com',
         password: 'Test123456!',
-        passwordRepeat: 'Test123456!'
+        passwordRepeat: 'Test123456!',
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -172,7 +171,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'test@test.com',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 'invalid', answer: 'Test' }
+        securityQuestion: { id: 'invalid', answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -185,7 +184,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'test@test.com',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: -1, answer: 'Test' }
+        securityQuestion: { id: -1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -198,7 +197,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'test@test.com',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 999999999, answer: 'Test' }
+        securityQuestion: { id: 999999999, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -212,7 +211,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: '<script>alert("xss")</script>@test.com',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       // Juice Shop accepts XSS in email (vulnerability)
@@ -227,7 +226,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: "admin' OR '1'='1",
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       // Juice Shop accepts SQL injection in email (vulnerability)
@@ -242,7 +241,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'test@test.com',
         password: '<script>alert("xss")</script>',
         passwordRepeat: '<script>alert("xss")</script>',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -256,7 +255,7 @@ describe('Negative API Tests - Invalid Data', () => {
         email: 'admin@juice-sh.op',
         password: 'Test123456!',
         passwordRepeat: 'Test123456!',
-        securityQuestion: { id: 1, answer: 'Test' }
+        securityQuestion: { id: 1, answer: 'Test' },
       };
       const response = await apiClient.post('/api/Users', userData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -268,11 +267,10 @@ describe('Negative API Tests - Invalid Data', () => {
   // NEGATIVE TESTS - USER LOGIN (POST /rest/user/login)
   // ============================================
   describe('POST /rest/user/login - Invalid Login Data', () => {
-    
     // Test 17: Missing email field - checks if server validates required email field for login
     test('should reject login with missing email', async () => {
       const loginData = {
-        password: 'admin123'
+        password: 'admin123',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -282,7 +280,7 @@ describe('Negative API Tests - Invalid Data', () => {
     // Test 18: Missing password field - checks if server validates required password field for login
     test('should reject login with missing password', async () => {
       const loginData = {
-        email: 'admin@juice-sh.op'
+        email: 'admin@juice-sh.op',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -293,7 +291,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with empty email', async () => {
       const loginData = {
         email: '',
-        password: 'admin123'
+        password: 'admin123',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -304,7 +302,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with empty password', async () => {
       const loginData = {
         email: 'admin@juice-sh.op',
-        password: ''
+        password: '',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -315,7 +313,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with invalid email format', async () => {
       const loginData = {
         email: 'invalid-email',
-        password: 'admin123'
+        password: 'admin123',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -326,7 +324,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with XSS in email', async () => {
       const loginData = {
         email: '<script>alert("xss")</script>',
-        password: 'admin123'
+        password: 'admin123',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -337,7 +335,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with SQL injection in email', async () => {
       const loginData = {
         email: "admin' OR '1'='1",
-        password: 'admin123'
+        password: 'admin123',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       // Juice Shop is intentionally vulnerable, so SQL injection might work
@@ -356,7 +354,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with extremely long email', async () => {
       const loginData = {
         email: 'a'.repeat(10000) + '@test.com',
-        password: 'admin123'
+        password: 'admin123',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -367,7 +365,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with extremely long password', async () => {
       const loginData = {
         email: 'admin@juice-sh.op',
-        password: 'a'.repeat(10000)
+        password: 'a'.repeat(10000),
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -378,7 +376,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with XSS in password', async () => {
       const loginData = {
         email: 'admin@juice-sh.op',
-        password: '<script>alert("xss")</script>'
+        password: '<script>alert("xss")</script>',
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -389,7 +387,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject login with SQL injection in password', async () => {
       const loginData = {
         email: 'admin@juice-sh.op',
-        password: "' OR '1'='1"
+        password: "' OR '1'='1",
       };
       const response = await apiClient.post('/rest/user/login', loginData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -401,13 +399,12 @@ describe('Negative API Tests - Invalid Data', () => {
   // NEGATIVE TESTS - FEEDBACKS (POST /api/Feedbacks)
   // ============================================
   describe('POST /api/Feedbacks - Invalid Feedback Data', () => {
-    
     // Note: All feedback tests require JWT authentication token
     beforeAll(async () => {
       // Login to get auth token for feedback tests
       const loginResponse = await apiClient.post('/rest/user/login', {
         email: 'admin@juice-sh.op',
-        password: 'admin123'
+        password: 'admin123',
       });
       if (loginResponse.status === 200) {
         authToken = loginResponse.data.authentication.token;
@@ -418,7 +415,7 @@ describe('Negative API Tests - Invalid Data', () => {
     test('should reject feedback without authentication', async () => {
       const feedbackData = {
         comment: 'Great product!',
-        rating: 5
+        rating: 5,
       };
       const response = await apiClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBeGreaterThanOrEqual(400);
@@ -429,7 +426,7 @@ describe('Negative API Tests - Invalid Data', () => {
       if (!authToken) return;
       const authClient = createAPIClient(authToken);
       const feedbackData = {
-        rating: 5
+        rating: 5,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -440,7 +437,7 @@ describe('Negative API Tests - Invalid Data', () => {
       if (!authToken) return;
       const authClient = createAPIClient(authToken);
       const feedbackData = {
-        comment: 'Great product!'
+        comment: 'Great product!',
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -452,7 +449,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: '',
-        rating: 5
+        rating: 5,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -464,7 +461,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: 'Great product!',
-        rating: -1
+        rating: -1,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -476,7 +473,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: 'Great product!',
-        rating: 0
+        rating: 0,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -488,7 +485,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: 'Great product!',
-        rating: 10
+        rating: 10,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -500,7 +497,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: 'Great product!',
-        rating: 'five'
+        rating: 'five',
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -512,7 +509,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: '<script>alert("xss")</script>',
-        rating: 5
+        rating: 5,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -524,7 +521,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: "'; DROP TABLE Feedbacks--",
-        rating: 5
+        rating: 5,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -536,7 +533,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: 'a'.repeat(10000),
-        rating: 5
+        rating: 5,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);
@@ -548,7 +545,7 @@ describe('Negative API Tests - Invalid Data', () => {
       const authClient = createAPIClient(authToken);
       const feedbackData = {
         comment: 'Great product!',
-        rating: 999999
+        rating: 999999,
       };
       const response = await authClient.post('/api/Feedbacks', feedbackData);
       expect(response.status).toBe(500);

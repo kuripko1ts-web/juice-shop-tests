@@ -39,6 +39,7 @@ test-portfolio/
 ### **1. api-tests.test.js** - Основні API тести
 
 **Що є:**
+
 - ✅ GET /api/Products - отримання списку продуктів
 - ✅ POST /api/Users - реєстрація користувачів
 - ✅ POST /rest/user/login - логін користувачів
@@ -58,6 +59,7 @@ test-portfolio/
 ### **2. security-tests.test.js** - OWASP Top 10 Security тести
 
 **Що є:**
+
 - ✅ **A01: Broken Access Control** - перевірка доступу до адмінських ендпоінтів
 - ✅ **A03: Injection** - SQL injection атаки
 - ✅ **A05: Security Misconfiguration** - конфігурація безпеки
@@ -78,6 +80,7 @@ test-portfolio/
 **Що є:**
 
 #### **Реєстрація (16 тестів):**
+
 - ✅ Missing email field
 - ✅ Empty email string
 - ✅ Invalid email format
@@ -96,6 +99,7 @@ test-portfolio/
 - ✅ Duplicate email
 
 #### **Логін (11 тестів):**
+
 - ✅ Missing email field
 - ✅ Missing password field
 - ✅ Empty email string
@@ -109,6 +113,7 @@ test-portfolio/
 - ✅ SQL injection in password
 
 #### **Відгуки (12 тестів):**
+
 - ✅ No authentication
 - ✅ Missing comment field
 - ✅ Missing rating field
@@ -133,26 +138,31 @@ test-portfolio/
 **Що є:**
 
 #### **Валідні пошукові запити (3 тести):**
+
 - ✅ Valid product name search
 - ✅ Case-insensitive search
 - ✅ Partial match search
 
 #### **Порожні та null запити (3 тести):**
+
 - ✅ Empty search query
 - ✅ Null search parameter
 - ✅ Missing search parameter
 
 #### **Спеціальні символи та Unicode (4 тести):**
+
 - ✅ Special characters
 - ✅ Unicode characters (emoji)
 - ✅ Cyrillic characters
 - ✅ Numeric search query
 
 #### **Ліміти довжини (2 тести):**
+
 - ✅ Extremely long search query (10000 chars)
 - ✅ Single character search
 
 #### **Ін'єкційні атаки (6 тестів):**
+
 - ✅ SQL injection in search
 - ✅ SQL injection with UNION
 - ✅ XSS in search
@@ -161,6 +171,7 @@ test-portfolio/
 - ✅ Command injection
 
 #### **Edge cases (6 тестів):**
+
 - ✅ Search with spaces
 - ✅ Search with multiple spaces
 - ✅ Search with leading/trailing spaces
@@ -169,6 +180,7 @@ test-portfolio/
 - ✅ Regex patterns
 
 #### **Валідація структури відповіді (2 тести):**
+
 - ✅ Valid response structure
 - ✅ No results response
 
@@ -183,6 +195,7 @@ test-portfolio/
 ### **1. registration.spec.js** - Тести реєстрації
 
 **Що є:**
+
 - ✅ Реєстрація з валідними даними
 - ✅ Реєстрація з існуючим email
 - ✅ Реєстрація з невідповідними паролями
@@ -199,6 +212,7 @@ test-portfolio/
 - ✅ Перевірка можливості логіну після реєстрації
 
 **Page Objects:**
+
 - ✅ RegistrationPage
 
 **Кількість тестів:** 12 тестів
@@ -208,6 +222,7 @@ test-portfolio/
 ### **2. smoke.spec.js** - Smoke тести
 
 **Що є:**
+
 - ✅ Логін валідного користувача (admin@juice-sh.op)
 - ✅ Логін заблокованого користувача (locked_out@juice-sh.op)
 - ✅ Логін з неправильним паролем
@@ -219,6 +234,7 @@ test-portfolio/
 - ✅ Перевірка наявності продуктів на сторінці інвентарю
 
 **Page Objects:**
+
 - ✅ LoginPage
 - ✅ CartPage
 
@@ -229,7 +245,8 @@ test-portfolio/
 ### **3. reg.spec.js** - Regression тести
 
 **Що є:**
-- ✅ Checkout з другим методом оплати (карта ************8108)
+
+- ✅ Checkout з другим методом оплати (карта ****\*\*\*\*****8108)
 - ✅ Checkout з One Day Delivery
 - ✅ Checkout з Fast Delivery
 - ✅ Checkout з Standard Delivery
@@ -241,6 +258,7 @@ test-portfolio/
 ### **4. integrated-user-lifecycle.spec.js** - Інтегровані тести
 
 **Що є:**
+
 - ✅ Створення користувача через API
 - ✅ Верифікація створення з assertions
 - ✅ Логін через UI
@@ -257,7 +275,8 @@ test-portfolio/
 ### **4. reg.spec.js** - Regression тести
 
 **Що є:**
-- ✅ Checkout з другим методом оплати (карта ************8108)
+
+- ✅ Checkout з другим методом оплати (карта ****\*\*\*\*****8108)
 - ✅ Checkout з One Day Delivery
 - ✅ Checkout з Fast Delivery
 - ✅ Checkout з Standard Delivery
@@ -269,6 +288,7 @@ test-portfolio/
 ### **5. search.spec.js** - Тести пошуку
 
 **Що є:**
+
 - ✅ Пошук за повною назвою продукту
 - ✅ Пошук за частковою назвою продукту
 - ✅ Пошук з неіснуючим продуктом (негативний тест)
@@ -281,6 +301,7 @@ test-portfolio/
 - ✅ Пошук продукту після логіну
 
 **Page Objects:**
+
 - ✅ SearchPage
 
 **Кількість тестів:** 10 тестів
@@ -292,6 +313,7 @@ test-portfolio/
 ### **6. pagination.spec.js** - Тести пагінації
 
 **Що є:**
+
 - ✅ Перевірка наявності пагінатора
 - ✅ Перевірка тексту діапазону сторінок
 - ✅ Зміна кількості елементів на сторінці (15, 45)
@@ -301,6 +323,7 @@ test-portfolio/
 - ✅ Повний цикл навігації по сторінках
 
 **Page Objects:**
+
 - ✅ SearchPage (оновлено з методами пагінації)
 
 **Кількість тестів:** 9 тестів
@@ -308,6 +331,7 @@ test-portfolio/
 **Статус:** ✅ Всі тести пройдено (9 passed, 9 total)
 
 **Технічні виправлення:**
+
 - ✅ Виправлено strict mode violations для кнопок навігації
 - ✅ Додано обробку snackbar interference
 - ✅ Використано JavaScript evaluation для bypass touch target
@@ -318,6 +342,7 @@ test-portfolio/
 ### **7. Page Object Model (pages/)**
 
 **Що є:**
+
 - ✅ **BasePage.js** - базовий клас для всіх Page Objects
 - ✅ **LoginPage.js** - сторінка логіну з методами:
   - goto()
@@ -364,8 +389,10 @@ test-portfolio/
 ### **Високий пріоритет (Critical Gaps)**
 
 #### **1. UI тести фільтрації та пагінації**
+
 **Статус:** ✅ Пагінація покрито, Фільтрація неможлива
 **Що є:**
+
 - ✅ UI тести пошуку в search.spec.js (10 тестів)
 - ✅ API тести пошуку в search-tests.test.js (26 тестів)
 - ✅ UI тести пагінації в pagination.spec.js (9 тестів)
@@ -373,10 +400,12 @@ test-portfolio/
 - ✅ FILTRATION_ANALYSIS_REPORT.md - детальний аналіз фільтрації
 
 **Чого не вистачає:**
+
 - ❌ UI тести фільтрації продуктів - **НЕМОЖЛИВО створити** (відсутні UI елементи)
 - ❌ UI тести сортування продуктів - **НЕМОЖЛИВО створити** (відсутні UI елементи)
 
 **Аналіз фільтрації:**
+
 - ❌ На сторінці пошуку відсутні видимі елементи UI для фільтрації
 - ❌ Немає кнопок фільтрів, чекбоксів, радіокнопок, категорій
 - ❌ Немає елементів UI для сортування
@@ -384,6 +413,7 @@ test-portfolio/
 - ✅ Доступні опції розміру сторінки: 15 та 45 елементів
 
 **Рекомендації:**
+
 - Розглянути API тести для фільтрації (якщо підтримується через URL параметри)
 - Перевірити документацію Juice Shop для прихованих елементів фільтрації
 - Фільтрація може бути реалізована через API, а не через UI
@@ -391,13 +421,16 @@ test-portfolio/
 ---
 
 #### **2. Test Data Management**
+
 **Статус:** ⚠️ Частково наявні
 **Що є:**
+
 - ✅ `api-tests/fixtures/users.json` - тестові дані користувачів
 - ✅ `api-tests/fixtures/products.json` - тестові дані продуктів
 - ✅ Використання fixtures в integrated-user-lifecycle.spec.js
 
 **Чого не вистачає:**
+
 - ❌ Factories для генерації тестових даних
 - ❌ Data cleanup після тестів
 - ❌ Random data generators
@@ -405,6 +438,7 @@ test-portfolio/
 - ❌ Seed scripts для поповнення тестової бази даних
 
 **Що треба створити:**
+
 - `api-tests/factories/` - factories для генерації даних
 - `api-tests/helpers/cleanup.js` - cleanup helper
 - Seed scripts для бази даних
@@ -412,8 +446,10 @@ test-portfolio/
 ---
 
 #### **4. Code Quality Tools**
+
 **Статус:** ❌ Відсутні
 **Чого не вистачає:**
+
 - ❌ ESLint конфігурація
 - ❌ Prettier конфігурація
 - ❅ Pre-commit hooks (husky, lint-staged)
@@ -421,6 +457,7 @@ test-portfolio/
 - ❅ Linting rules для Jest/Playwright
 
 **Що треба створити:**
+
 - `.eslintrc.js` - ESLint конфігурація
 - `.prettierrc` - Prettier конфігурація
 - `.husky/` - pre-commit hooks
@@ -431,7 +468,9 @@ test-portfolio/
 ### **Середній пріоритет (Medium Gaps)**
 
 #### **5. Додаткові API тести**
+
 **Чого не вистачає:**
+
 - ❌ Тести для /api/Challenges (челенджі)
 - ❌ Тести для /api/SecurityQuestions (питання безпеки)
 - ❅ Тести для /api/Recycles (recycle bin)
@@ -444,7 +483,9 @@ test-portfolio/
 ---
 
 #### **6. Додаткові UI тести**
+
 **Чого не вистачає:**
+
 - ❅ Тести для сторінки профілю користувача
 - ❅ Тести для сторінки налаштувань
 - ❅ Тести для сторінки історії замовлень
@@ -458,8 +499,10 @@ test-portfolio/
 ---
 
 #### **7. Performance тести**
+
 **Статус:** ❌ Відсутні
 **Чого не вистачає:**
+
 - ❅ Load testing
 - ❅ Stress testing
 - ❅ Response time monitoring
@@ -469,8 +512,10 @@ test-portfolio/
 ---
 
 #### **8. Accessibility тести**
+
 **Статус:** ❌ Відсутні
 **Чого не вистачає:**
+
 - ❅ WCAG compliance тести
 - ❅ Screen reader тести
 - ❅ Keyboard navigation тести
@@ -482,8 +527,10 @@ test-portfolio/
 ### **Низький пріоритет (Low Gaps)**
 
 #### **9. Visual regression тести**
+
 **Статус:** ❌ Відсутні
 **Чого не вистачає:**
+
 - ❅ Screenshot comparison
 - ❅ Visual diff tools
 - ❅ Cross-browser visual testing
@@ -491,8 +538,10 @@ test-portfolio/
 ---
 
 #### **10. API Documentation тести**
+
 **Статус:** ❌ Відсутні
 **Чого не вистачає:**
+
 - ❅ API contract testing
 - ❅ OpenAPI schema validation
 - ❅ API versioning tests
@@ -501,19 +550,19 @@ test-portfolio/
 
 ## 📊 Підсумок по категоріях
 
-| Категорія | Існує | Відсутнє | Пріоритет |
-|-----------|-------|----------|-----------|
-| **API тести** | ✅ 4 файли (~100 тестів) | ⚠️ ~8 ендпоінтів | Високий |
-| **UI тести** | ✅ 6 файлів (~43 тестів) | ⚠️ UI фільтрація (неможливо) | Високий |
-| **Security тести** | ✅ 1 файл (~20 тестів) | ⚠️ Додаткові security сценарії | Високий |
-| **Негативні тести** | ✅ 1 файл (39 тестів) | ✅ Повністю покрито | - |
-| **Пошук тести** | ✅ 3 файли (45 тестів) | ⚠️ UI фільтрація (неможливо) | Високий |
-| **Пагінація тести** | ✅ 1 файл (9 тестів) | ✅ Повністю покрито | - |
-| **Page Object Model** | ✅ 4 класи | ✅ Всі використовуються | Середній |
-| **Test Data Management** | ⚠️ 2 fixtures | ❌ Factories, Cleanup | Середній |
-| **Code Quality Tools** | ❌ Відсутні | ❌ ESLint, Prettier, Husky | Середній |
-| **Performance тести** | ❌ Відсутні | ❅ Load, Stress testing | Низький |
-| **Accessibility тести** | ❌ Відсутні | ❅ WCAG compliance | Низький |
+| Категорія                | Існує                    | Відсутнє                       | Пріоритет |
+| ------------------------ | ------------------------ | ------------------------------ | --------- |
+| **API тести**            | ✅ 4 файли (~100 тестів) | ⚠️ ~8 ендпоінтів               | Високий   |
+| **UI тести**             | ✅ 6 файлів (~43 тестів) | ⚠️ UI фільтрація (неможливо)   | Високий   |
+| **Security тести**       | ✅ 1 файл (~20 тестів)   | ⚠️ Додаткові security сценарії | Високий   |
+| **Негативні тести**      | ✅ 1 файл (39 тестів)    | ✅ Повністю покрито            | -         |
+| **Пошук тести**          | ✅ 3 файли (45 тестів)   | ⚠️ UI фільтрація (неможливо)   | Високий   |
+| **Пагінація тести**      | ✅ 1 файл (9 тестів)     | ✅ Повністю покрито            | -         |
+| **Page Object Model**    | ✅ 4 класи               | ✅ Всі використовуються        | Середній  |
+| **Test Data Management** | ⚠️ 2 fixtures            | ❌ Factories, Cleanup          | Середній  |
+| **Code Quality Tools**   | ❌ Відсутні              | ❌ ESLint, Prettier, Husky     | Середній  |
+| **Performance тести**    | ❌ Відсутні              | ❅ Load, Stress testing         | Низький   |
+| **Accessibility тести**  | ❌ Відсутні              | ❅ WCAG compliance              | Низький   |
 
 ---
 
@@ -543,6 +592,7 @@ test-portfolio/
 **Загальний статус тестового портфоліо:** ✅ **Хорошо покрито**
 
 **Покриття ключових функцій:**
+
 - ✅ Логін: 90% (API + UI)
 - ✅ Реєстрація: 95% (API + UI)
 - ✅ Кошик: 85% (API + UI)
@@ -554,6 +604,7 @@ test-portfolio/
 - ✅ Негативні тести: 95% (дуже добре покрито)
 
 **Сильні сторони:**
+
 - ✅ Комплексні API тести
 - ✅ OWASP Top 10 security тести
 - ✅ Відмінні негативні тести
@@ -563,6 +614,7 @@ test-portfolio/
 - ✅ Детальний аналіз відсутніх функцій
 
 **Слабкі сторони:**
+
 - ⚠️ UI фільтрація неможлива через відсутність UI елементів в Juice Shop
 - ❌ Відсутні code quality tools
 - ⚠️ Обмежене test data management

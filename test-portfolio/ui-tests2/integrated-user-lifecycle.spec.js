@@ -27,15 +27,15 @@ const loadUserData = () => {
 // API Client setup
 const createAPIClient = (token = null) => {
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   };
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
-  
+
   return axios.create({
     baseURL: BASE_URL,
-    headers: headers
+    headers: headers,
   });
 };
 
@@ -50,9 +50,11 @@ describe('Integrated User Lifecycle Test', () => {
     apiClient = createAPIClient();
   });
 
-  test('@integrated @user-lifecycle Complete User Lifecycle: Create, Login, Logout, Delete', async ({ page }) => {
+  test('@integrated @user-lifecycle Complete User Lifecycle: Create, Login, Logout, Delete', async ({
+    page,
+  }) => {
     console.log('🚀 Starting Integrated User Lifecycle Test');
-    console.log('=' .repeat(60));
+    console.log('='.repeat(60));
 
     // ============================================
     // STEP 1: Load user data from fixtures
@@ -60,15 +62,15 @@ describe('Integrated User Lifecycle Test', () => {
     console.log('\n📋 STEP 1: Loading user data from fixtures');
     const usersData = loadUserData();
     const newUserTemplate = usersData.newUser;
-    
+
     // Generate unique email with timestamp
     const timestamp = Date.now();
     userEmail = newUserTemplate.email.replace('{{timestamp}}', timestamp);
     userPassword = newUserTemplate.password;
-    
+
     console.log(`📧 Email: ${userEmail}`);
     console.log(`🔑 Password: ${userPassword}`);
-    
+
     // Assert user data is loaded correctly
     expect(userEmail).toBeDefined();
     expect(userPassword).toBeDefined();
@@ -84,25 +86,25 @@ describe('Integrated User Lifecycle Test', () => {
       email: userEmail,
       password: userPassword,
       passwordRepeat: userPassword,
-      securityQuestion: newUserTemplate.securityQuestion
+      securityQuestion: newUserTemplate.securityQuestion,
     };
 
     try {
       const createResponse = await apiClient.post('/api/Users', userData);
-      
+
       // Assertions for user creation
       expect(createResponse.status).toBe(201);
       expect(createResponse.data).toBeDefined();
       expect(createResponse.data.data).toBeDefined();
       expect(createResponse.data.data.id).toBeDefined();
       expect(createResponse.data.data.email).toBe(userEmail);
-      
+
       createdUserId = createResponse.data.data.id;
-      
-      console.log(`✅ User created successfully`);
+
+      console.log('✅ User created successfully');
       console.log(`👤 User ID: ${createdUserId}`);
       console.log(`📧 Email: ${createResponse.data.data.email}`);
-      
+
       // Additional assertions
       expect(typeof createdUserId).toBe('number');
       expect(createdUserId).toBeGreaterThan(0);
@@ -118,20 +120,20 @@ describe('Integrated User Lifecycle Test', () => {
     try {
       const loginResponse = await apiClient.post('/rest/user/login', {
         email: userEmail,
-        password: userPassword
+        password: userPassword,
       });
-      
+
       // Assertions for API login
       expect(loginResponse.status).toBe(200);
       expect(loginResponse.data).toBeDefined();
       expect(loginResponse.data.authentication).toBeDefined();
       expect(loginResponse.data.authentication.token).toBeDefined();
-      
+
       authToken = loginResponse.data.authentication.token;
-      
+
       console.log('✅ API login successful');
       console.log(`� Token: ${authToken.substring(0, 20)}...`);
-      
+
       // Additional assertions
       expect(authToken.length).toBeGreaterThan(50);
     } catch (error) {
@@ -142,18 +144,22 @@ describe('Integrated User Lifecycle Test', () => {
     // ============================================
     // STEP 4: Verify user exists via API with authentication
     // ============================================
-    console.log('\n� STEP 4: Verifying user creation via API with authentication');
+    console.log(
+      '\n� STEP 4: Verifying user creation via API with authentication'
+    );
     const authClient = createAPIClient(authToken);
     try {
-      const verifyResponse = await authClient.get(`/api/Users/${createdUserId}`);
-      
+      const verifyResponse = await authClient.get(
+        `/api/Users/${createdUserId}`
+      );
+
       // Assertions for user verification
       expect(verifyResponse.status).toBe(200);
       expect(verifyResponse.data).toBeDefined();
       expect(verifyResponse.data.data).toBeDefined();
       expect(verifyResponse.data.data.id).toBe(createdUserId);
       expect(verifyResponse.data.data.email).toBe(userEmail);
-      
+
       console.log('✅ User verified via API');
       console.log(`� User ID: ${verifyResponse.data.data.id}`);
       console.log(`📧 Email: ${verifyResponse.data.data.email}`);
@@ -167,7 +173,7 @@ describe('Integrated User Lifecycle Test', () => {
     // ============================================
     console.log('\n🖥️  STEP 5: Login via UI');
     const loginPage = new LoginPage(page);
-    
+
     await loginPage.goto();
     await loginPage.isLoaded();
     await loginPage.login(userEmail, userPassword);
@@ -176,10 +182,12 @@ describe('Integrated User Lifecycle Test', () => {
     // Assertions for UI login
     const currentUrl = page.url();
     expect(currentUrl).not.toContain('login');
-    console.log(`✅ UI login successful - redirected from login page`);
-    
+    console.log('✅ UI login successful - redirected from login page');
+
     // Verify user is logged in by checking for account menu
-    const accountMenuButton = page.getByRole('button', { name: 'Show/hide account menu' });
+    const accountMenuButton = page.getByRole('button', {
+      name: 'Show/hide account menu',
+    });
     await expect(accountMenuButton).toBeVisible({ timeout: 5000 });
     console.log('✅ Account menu button is visible - user is logged in');
 
@@ -189,8 +197,10 @@ describe('Integrated User Lifecycle Test', () => {
     await accountMenuButton.click();
     await page.getByRole('menuitem', { name: 'Go to user profile' }).click();
     await page.waitForTimeout(1000);
-    
-    const userProfileHeading = page.getByRole('heading', { name: 'User Profile' });
+
+    const userProfileHeading = page.getByRole('heading', {
+      name: 'User Profile',
+    });
     await expect(userProfileHeading).toBeVisible();
     console.log('✅ User profile page is accessible');
 
@@ -208,15 +218,20 @@ describe('Integrated User Lifecycle Test', () => {
 
     // Assertions for logout
     const logoutUrl = page.url();
-    expect(logoutUrl).toContain('logout') || logoutUrl === `${BASE_URL}/` || logoutUrl === `${BASE_URL}/#/`;
+    expect(logoutUrl).toContain('logout') ||
+      logoutUrl === `${BASE_URL}/` ||
+      logoutUrl === `${BASE_URL}/#/`;
     console.log('✅ UI logout successful - redirected to logout/home');
 
     // Verify user is logged out by navigating to login page
     await page.goto(`${BASE_URL}/#/login`);
     await page.waitForTimeout(1000);
-    
+
     // Check if login form is visible
-    const emailInputVisible = await page.locator('#email').isVisible().catch(() => false);
+    const emailInputVisible = await page
+      .locator('#email')
+      .isVisible()
+      .catch(() => false);
     expect(emailInputVisible).toBeTruthy();
     console.log('✅ Login form is visible - user is logged out');
 

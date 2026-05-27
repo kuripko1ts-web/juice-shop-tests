@@ -2,41 +2,41 @@ name: API Tests
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   workflow_dispatch:
 
 jobs:
   api-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        
-    - name: Install dependencies
-      working-directory: ./api-tests
-      run: npm install
-      
-    - name: Start Juice Shop with Docker
-      run: |
-        docker run -d -p 3000:3000 bkimminich/juice-shop
-        sleep 15
-        
-    - name: Run API tests
-      working-directory: ./api-tests
-      run: npm test
-      
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: api-test-results
-        path: api-tests/logs/
-        retention-days: 30
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./api-tests
+        run: npm install
+
+      - name: Start Juice Shop with Docker
+        run: |
+          docker run -d -p 3000:3000 bkimminich/juice-shop
+          sleep 15
+
+      - name: Run API tests
+        working-directory: ./api-tests
+        run: npm test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-results
+          path: api-tests/logs/
+          retention-days: 30

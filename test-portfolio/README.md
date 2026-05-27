@@ -38,7 +38,8 @@ test-portfolio/
 │   │   ├── BasePage.js      # Базова сторінка
 │   │   ├── LoginPage.js     # Сторінка логіну
 │   │   ├── CartPage.js      # Сторінка кошика
-│   │   └── RegistrationPage.js # Сторінка реєстрації
+│   │   ├── RegistrationPage.js # Сторінка реєстрації
+│   │   └── SearchPage.js    # Сторінка пошуку
 │   ├── testData/            # Тестові дані
 │   │   └── credentials.js   # Логіни/паролі
 │   ├── utils/               # Утиліти
@@ -46,6 +47,7 @@ test-portfolio/
 │   ├── smoke.spec.js        # Smoke тести
 │   ├── reg.spec.js          # Регресійні тести
 │   ├── registration.spec.js # Реєстрація тести
+│   ├── search.spec.js       # Пошукові тести
 │   ├── integrated-user-lifecycle.spec.js # Інтегровані тести
 │   ├── playwright.config.js # Конфігурація Playwright
 │   ├── package.json         # Залежності UI тестів
@@ -68,6 +70,7 @@ test-portfolio/
 Тестування REST API Juice Shop:
 
 **Основні API тести (api-tests.test.js):**
+
 - ✅ Аутентифікація та авторизація
 - ✅ CRUD операції з продуктами
 - ✅ Кошик покупок
@@ -75,6 +78,7 @@ test-portfolio/
 - ✅ Отримання інформації про користувача
 
 **OWASP Top 10 Security тести (security-tests.test.js):**
+
 - ✅ A01: Broken Access Control
 - ✅ A02: Cryptographic Failures
 - ✅ A03: Injection (SQL/NoSQL/XSS)
@@ -86,6 +90,7 @@ test-portfolio/
 - ✅ A10: Server-Side Request Forgery (SSRF)
 
 **Product Search API тести (search-tests.test.js):**
+
 - ✅ Валідні пошукові запити
 - ✅ Порожні та null запити
 - ✅ Спеціальні символи та Unicode
@@ -93,6 +98,7 @@ test-portfolio/
 - ✅ Крайові випадки та обмеження довжини
 
 **Negative API тести (negative-tests.test.js):**
+
 - ✅ Невалідні дані реєстрації
 - ✅ Невалідні дані логіну
 - ✅ Невалідні дані feedback
@@ -103,6 +109,7 @@ test-portfolio/
 Тестування користувацького інтерфейсу з Playwright:
 
 **Smoke Тести (smoke.spec.js):**
+
 - ✅ Логін користувача
 - ✅ Перегляд продуктів
 - ✅ Додавання товару в кошик
@@ -110,12 +117,14 @@ test-portfolio/
 - ✅ Перевірка кошика
 
 **Regression Тести (reg.spec.js):**
+
 - ✅ Реєстрація нового користувача
 - ✅ Логін з невірними даними
 - ✅ Перевірка One-Day Delivery
 - ✅ Перевірка кошика з кількома товарами
 
 **Registration Тести (registration.spec.js):**
+
 - ✅ Реєстрація з валідними даними
 - ✅ Реєстрація з невалідними даними
 - ✅ Валідація полів форми (email, password, security question)
@@ -123,25 +132,42 @@ test-portfolio/
 - ✅ XSS та SQL ін'єкції в полях реєстрації
 
 **Інтегровані тести (integrated-user-lifecycle.spec.js):**
+
 - ✅ Створення користувача через API
 - ✅ Логін через UI
 - ✅ Повний життєвий цикл користувача
 
+**Search Тести (search.spec.js):**
+
+- ✅ Пошук за повною назвою продукту
+- ✅ Пошук за частковою назвою продукту
+- ✅ Пошук з неіснуючим продуктом (негативний тест)
+- ✅ Пошук зі спецсимволами (негативний тест)
+- ✅ Пошук з великими/малими літерами (case-insensitive)
+- ✅ Пошук з числами
+- ✅ Перевірка наявності кнопки пошуку
+- ✅ Перевірка відкриття поля пошуку
+- ✅ Пошук продукту після логіну
+
 **Page Object Model:**
+
 - `BasePage.js` - базові методи для всіх сторінок
 - `LoginPage.js` - сторінка аутентифікації
 - `CartPage.js` - сторінка кошика покупок
 - `RegistrationPage.js` - сторінка реєстрації
+- `SearchPage.js` - сторінка пошуку продуктів
 
 ## 🛠 Технології
 
 ### API Тести
+
 - **Runtime:** Node.js 20+
 - **Framework:** Jest
 - **HTTP Client:** Axios
 - **Reporting:** JSON logs, coverage reports
 
 ### UI Тести
+
 - **Runtime:** Node.js 18+
 - **Framework:** Playwright
 - **Browsers:** Chromium (default)
@@ -149,6 +175,7 @@ test-portfolio/
 - **Pattern:** Page Object Model (POM)
 
 ### CI/CD
+
 - **Platform:** GitHub Actions
 - **OS:** Ubuntu Latest
 - **Docker:** Juice Shop container
@@ -159,6 +186,7 @@ test-portfolio/
 ### Локальний запуск
 
 #### API Тести
+
 ```bash
 cd api-tests
 npm install
@@ -166,6 +194,7 @@ npm test
 ```
 
 #### UI Тести
+
 ```bash
 cd ui-tests2
 npm install
@@ -174,12 +203,19 @@ npx playwright test
 ```
 
 #### Запуск конкретних тестів
+
 ```bash
 # Smoke тести
 npx playwright test smoke.spec.js
 
 # Regression тести
 npx playwright test reg.spec.js
+
+# Search тести
+npx playwright test search.spec.js
+
+# Registration тести
+npx playwright test registration.spec.js
 
 # З заголовком
 npx playwright test --headed
@@ -189,6 +225,7 @@ npx playwright test --ui
 ```
 
 #### Запуск всіх тестів (PowerShell)
+
 ```powershell
 .\run-all.ps1
 ```
@@ -196,12 +233,14 @@ npx playwright test --ui
 ### Перегляд результатів
 
 #### Playwright HTML Report
+
 ```bash
 cd ui-tests2
 npx playwright show-report
 ```
 
 #### Playwright Test Results
+
 ```bash
 cd ui-tests2
 npx playwright show-trace trace.zip
@@ -212,15 +251,18 @@ npx playwright show-trace trace.zip
 ### GitHub Actions
 
 **Автоматичний запуск:**
+
 - Push в гілки: `main`, `master`, `develop`
 - Pull Request в гілки: `main`, `master`, `develop`
 
 **Ручний запуск:**
+
 1. GitHub → Actions tab
 2. Виберіть workflow (UI Tests або API Tests)
 3. Run workflow → Виберіть гілку → Run workflow
 
 **Перегляд результатів:**
+
 - GitHub → Actions tab → Workflow run
 - Завантаження artifacts (звіти тестів)
 
@@ -229,14 +271,18 @@ npx playwright show-trace trace.zip
 ## 📊 Структура тестів
 
 ### Smoke Тести
+
 Критичні тези для перевірки основного функціоналу:
+
 - Логін
 - Перегляд продуктів
 - Додавання в кошик
 - Оформлення замовлення
 
 ### Regression Тести
+
 Повні тести для перевірки всього функціоналу:
+
 - Реєстрація
 - Валідація форм
 - Перевірка різних сценаріїв
@@ -245,12 +291,14 @@ npx playwright show-trace trace.zip
 ## 🎯 OWASP Juice Shop
 
 OWASP Juice Shop - найсучасніше вразливе веб-додаток для:
+
 - 🎓 Навчання з веб-безпеки
 - 🛡 Тренінгів з пентестингу
 - 🏆 CTF змагань
 - 🔧 Тестування інструментів безпеки
 
 **Містить вразливості:**
+
 - OWASP Top Ten
 - SQL Injection
 - XSS

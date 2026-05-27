@@ -5,11 +5,13 @@
 ## 📋 Вимоги
 
 ### Обов'язкові
+
 - **Node.js** версії 18 або вище
 - **npm** (входить в Node.js)
 - **Git**
 
 ### Опціональні
+
 - **Docker** (для запуску Juice Shop в контейнері)
 - **VS Code** (рекомендована IDE)
 
@@ -75,6 +77,7 @@ npm test
 ```
 
 ### Результати API тестів
+
 - Логи зберігаються в `api-tests/logs/`
 - JSON формат для легкої інтеграції
 
@@ -95,24 +98,28 @@ npx playwright test
 ```
 
 ### Результати UI тестів
+
 - HTML звіт: `ui-tests2/playwright-report/`
 - Результати тестів: `ui-tests2/test-results/`
 
 ## 🎬 Запуск конкретних тестів
 
 ### Smoke тести
+
 ```bash
 cd ui-tests2
 npx playwright test smoke.spec.js
 ```
 
 ### Regression тести
+
 ```bash
 cd ui-tests2
 npx playwright test reg.spec.js
 ```
 
 ### Запуск з візуалізацією
+
 ```bash
 # З відкритим браузером
 npx playwright test --headed
@@ -125,6 +132,7 @@ npx playwright test --debug
 ```
 
 ### Запуск конкретного тесту
+
 ```bash
 # За назвою
 npx playwright test -g "Login user"
@@ -136,6 +144,7 @@ npx playwright test smoke.spec.js:10
 ## 📊 Перегляд результатів
 
 ### Playwright HTML Report
+
 ```bash
 cd ui-tests2
 npx playwright show-report
@@ -144,6 +153,7 @@ npx playwright show-report
 Це відкриє інтерактивний HTML звіт у браузері за адресою http://localhost:9323
 
 ### Playwright Trace Viewer
+
 ```bash
 cd ui-tests2
 npx playwright show-trace trace.zip
@@ -160,14 +170,14 @@ npx playwright show-trace trace.zip
 ```javascript
 module.exports = {
   testDir: './',
-  timeout: 30000,           // Тайм-аут тесту (мс)
-  retries: 0,                // Кількість повторів
-  workers: 1,                // Паралельні воркери
-  reporter: 'html',          // Тип звіту
+  timeout: 30000, // Тайм-аут тесту (мс)
+  retries: 0, // Кількість повторів
+  workers: 1, // Паралельні воркери
+  reporter: 'html', // Тип звіту
   use: {
-    baseURL: 'http://localhost:3000',  // URL Juice Shop
-    screenshot: 'only-on-failure',      // Скріншоти при помилках
-    video: 'retain-on-failure',         // Відео при помилках
+    baseURL: 'http://localhost:3000', // URL Juice Shop
+    screenshot: 'only-on-failure', // Скріншоти при помилках
+    video: 'retain-on-failure', // Відео при помилках
   },
 };
 ```
@@ -175,7 +185,9 @@ module.exports = {
 ## 🐛 Вирішення проблем
 
 ### Проблема: "Connection refused"
+
 **Рішення:** Переконайтеся що Juice Shop запущений на порту 3000
+
 ```bash
 # Перевірте порт
 curl http://localhost:3000
@@ -185,26 +197,34 @@ Test-NetConnection -ComputerName localhost -Port 3000
 ```
 
 ### Проблема: "Module not found"
+
 **Рішення:** Перевстановіть залежності
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
 ```
 
 ### Проблема: "Browser not found"
+
 **Рішення:** Встановіть браузери Playwright
+
 ```bash
 npx playwright install chromium
 ```
 
 ### Проблема: Тести падають з тайм-аутом
+
 **Рішення:** Збільште тайм-аут в playwright.config.js або додайте очікування
+
 ```javascript
 await page.waitForTimeout(5000);
 ```
 
 ### Проблема: "EADDRINUSE" (порт зайнятий)
+
 **Рішення:** Зупиніть Juice Shop або змініть порт
+
 ```bash
 # Знайдіть процес на порту 3000
 netstat -ano | findstr :3000
@@ -216,38 +236,43 @@ taskkill /PID <PID> /F
 ## 📝 Тестові дані
 
 ### Логіни та паролі
+
 Файл: `ui-tests2/testData/credentials.js`
 
 ```javascript
 module.exports = {
   validUser: {
     email: 'test@juice-sh.op',
-    password: 'password123'
+    password: 'password123',
   },
   invalidUser: {
     email: 'invalid@test.com',
-    password: 'wrongpassword'
-  }
+    password: 'wrongpassword',
+  },
 };
 ```
 
 ### Зміна тестових даних
+
 Відредагуйте файл `credentials.js` для використання інших логінів/паролів.
 
 ## 🔧 Налаштування VS Code
 
 ### Рекомендовані розширення
+
 - Playwright Test for VS Code
 - ESLint
 - Prettier
 
 ### Встановлення Playwright extension
+
 1. Відкрийте VS Code
 2. Перейдіть в Extensions (Ctrl+Shift+X)
 3. Пошукайте "Playwright Test for VS Code"
 4. Встановіть розширення від Microsoft
 
 ### Запуск тестів з VS Code
+
 - Натисніть на зелену кнопку поруч з тестом
 - Або натисніть Ctrl+Shift+P → "Playwright: Run all tests"
 

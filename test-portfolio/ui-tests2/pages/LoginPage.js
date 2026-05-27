@@ -6,42 +6,52 @@ class LoginPage extends BasePage {
     this.emailInput = page.locator('#email');
     this.passwordInput = page.locator('#password');
     this.submitButton = page.locator('#loginButton');
-    this.accountMenuButton = page.getByRole('button', { name: 'Show/hide account menu' });
+    this.accountMenuButton = page.getByRole('button', {
+      name: 'Show/hide account menu',
+    });
     this.logoutButton = page.getByRole('menuitem', { name: 'Logout' });
   }
 
   async goto() {
     await this.page.goto(`${this.baseUrl}/#/login`);
     await this.page.waitForTimeout(1000);
-    
+
     // Клікаємо на Close Welcome Banner якщо є
     try {
-      await this.page.getByRole('button', { name: 'Close Welcome Banner' }).click({ timeout: 2000 });
+      await this.page
+        .getByRole('button', { name: 'Close Welcome Banner' })
+        .click({ timeout: 2000 });
     } catch (e) {
       // Кнопка не знайдена - ігноруємо
     }
-    
+
     // Клікаємо на dismiss cookie message якщо є
     try {
-      await this.page.getByRole('button', { name: 'dismiss cookie message' }).click({ timeout: 2000 });
+      await this.page
+        .getByRole('button', { name: 'dismiss cookie message' })
+        .click({ timeout: 2000 });
     } catch (e) {
       // Кнопка не знайдена - ігноруємо
     }
-    
+
     await this.page.waitForTimeout(500);
   }
 
   async dismissDialogs() {
     try {
-    await this.page.getByRole('dialog', { name: 'cookieconsent' }).click();
-    await this.page.waitForTimeout(1000);
-  await this.page.getByRole('button', { name: 'dismiss cookie message' }).click();
+      await this.page.getByRole('dialog', { name: 'cookieconsent' }).click();
+      await this.page.waitForTimeout(1000);
+      await this.page
+        .getByRole('button', { name: 'dismiss cookie message' })
+        .click();
     } catch (e) {
       // Ignore if not present
     }
     await this.page.waitForTimeout(1000);
     try {
-      await this.page.getByRole('button', { name: 'Close Welcome Banner' }).click({ timeout: 2000, force: true });
+      await this.page
+        .getByRole('button', { name: 'Close Welcome Banner' })
+        .click({ timeout: 2000, force: true });
     } catch (e) {
       // Ignore if not present
     }

@@ -14,11 +14,13 @@ const credentials = require('./testData/credentials');
 const BASE_URL = 'http://localhost:3000';
 
 describe('Registration Тести - Реєстрація з валідними даними', () => {
-  test('@registration @positive Сценарій Реєстрація з валідними даними', async ({ page }) => {
+  test('@registration @positive Сценарій Реєстрація з валідними даними', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Реєстрація з валідними даними');
 
     const registrationPage = new RegistrationPage(page);
-    
+
     // Генерація унікальних даних для реєстрації
     const userCredentials = credentials.generateUserCredentials();
     const timestamp = Date.now();
@@ -37,7 +39,13 @@ describe('Registration Тести - Реєстрація з валідними �
     await registrationPage.isLoaded();
 
     // Заповнення форми реєстрації
-    await registrationPage.register(email, password, passwordRepeat, securityQuestionId, securityAnswer);
+    await registrationPage.register(
+      email,
+      password,
+      passwordRepeat,
+      securityQuestionId,
+      securityAnswer
+    );
     await page.waitForTimeout(2000);
 
     // Перевірка успішної реєстрації (перенаправлення з сторінки реєстрації)
@@ -65,7 +73,9 @@ describe('Registration Тести - Реєстрація з валідними �
 });
 
 describe('Registration Тести - Реєстрація з невалідними даними', () => {
-  test('@registration @negative Сценарій Реєстрація з існуючим email', async ({ page }) => {
+  test('@registration @negative Сценарій Реєстрація з існуючим email', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Реєстрація з існуючим email');
 
     const registrationPage = new RegistrationPage(page);
@@ -83,7 +93,13 @@ describe('Registration Тести - Реєстрація з невалідним
     await page.waitForTimeout(1000);
     await registrationPage.isLoaded();
 
-    await registrationPage.register(email, password, passwordRepeat, securityQuestionId, securityAnswer);
+    await registrationPage.register(
+      email,
+      password,
+      passwordRepeat,
+      securityQuestionId,
+      securityAnswer
+    );
     await page.waitForTimeout(2000);
 
     // Перевірка, що реєстрація не відбулася
@@ -97,7 +113,9 @@ describe('Registration Тести - Реєстрація з невалідним
     expect(errorMessage.length).toBeGreaterThan(0);
   });
 
-  test('@registration @negative Сценарій Реєстрація з невідповідними паролями', async ({ page }) => {
+  test('@registration @negative Сценарій Реєстрація з невідповідними паролями', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Реєстрація з невідповідними паролями');
 
     const registrationPage = new RegistrationPage(page);
@@ -119,16 +137,26 @@ describe('Registration Тести - Реєстрація з невалідним
     await registrationPage.emailInput.fill(email);
     await registrationPage.passwordInput.fill(password);
     await registrationPage.passwordRepeatInput.fill(passwordRepeat);
-    await page.locator('div').filter({ hasText: 'Security Question' }).nth(4).click();
-    await page.getByRole('option', { name: 'Mother\'s maiden name?' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).fill(securityAnswer);
+    await page
+      .locator('div')
+      .filter({ hasText: 'Security Question' })
+      .nth(4)
+      .click();
+    await page.getByRole('option', { name: "Mother's maiden name?" }).click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .fill(securityAnswer);
     await page.waitForTimeout(500);
 
     // Перевірка, що кнопка disabled при невідповідних паролях
     const isDisabled = await registrationPage.registerButton.isDisabled();
     expect(isDisabled).toBeTruthy();
-    console.log('✅ Кнопка disabled при невідповідних паролях - валідація працює');
+    console.log(
+      '✅ Кнопка disabled при невідповідних паролях - валідація працює'
+    );
 
     // Перевірка, що реєстрація не відбулася
     const currentUrl = page.url();
@@ -136,7 +164,9 @@ describe('Registration Тести - Реєстрація з невалідним
     console.log('✅ Реєстрація з невідповідними паролями заблокована');
   });
 
-  test('@registration @negative Сценарій Реєстрація з коротким паролем', async ({ page }) => {
+  test('@registration @negative Сценарій Реєстрація з коротким паролем', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Реєстрація з коротким паролем');
 
     const registrationPage = new RegistrationPage(page);
@@ -158,10 +188,18 @@ describe('Registration Тести - Реєстрація з невалідним
     await registrationPage.emailInput.fill(email);
     await registrationPage.passwordInput.fill(password);
     await registrationPage.passwordRepeatInput.fill(passwordRepeat);
-    await page.locator('div').filter({ hasText: 'Security Question' }).nth(4).click();
-    await page.getByRole('option', { name: 'Mother\'s maiden name?' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).fill(securityAnswer);
+    await page
+      .locator('div')
+      .filter({ hasText: 'Security Question' })
+      .nth(4)
+      .click();
+    await page.getByRole('option', { name: "Mother's maiden name?" }).click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .fill(securityAnswer);
     await page.waitForTimeout(500);
 
     // Перевірка, що кнопка disabled при короткому паролі
@@ -175,7 +213,9 @@ describe('Registration Тести - Реєстрація з невалідним
     console.log('✅ Реєстрація з коротким паролем заблокована');
   });
 
-  test('@registration @negative Сценарій Реєстрація без email', async ({ page }) => {
+  test('@registration @negative Сценарій Реєстрація без email', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Реєстрація без email');
 
     const registrationPage = new RegistrationPage(page);
@@ -193,10 +233,18 @@ describe('Registration Тести - Реєстрація з невалідним
     // Заповнюємо форму вручну без email
     await registrationPage.passwordInput.fill(password);
     await registrationPage.passwordRepeatInput.fill(passwordRepeat);
-    await page.locator('div').filter({ hasText: 'Security Question' }).nth(4).click();
-    await page.getByRole('option', { name: 'Mother\'s maiden name?' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).fill(securityAnswer);
+    await page
+      .locator('div')
+      .filter({ hasText: 'Security Question' })
+      .nth(4)
+      .click();
+    await page.getByRole('option', { name: "Mother's maiden name?" }).click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .fill(securityAnswer);
     await page.waitForTimeout(500);
 
     // Перевірка, що кнопка disabled без email
@@ -210,7 +258,9 @@ describe('Registration Тести - Реєстрація з невалідним
     console.log('✅ Реєстрація без email заблокована');
   });
 
-  test('@registration @negative Сценарій Реєстрація з невалідним email', async ({ page }) => {
+  test('@registration @negative Сценарій Реєстрація з невалідним email', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Реєстрація з невалідним email');
 
     const registrationPage = new RegistrationPage(page);
@@ -230,10 +280,18 @@ describe('Registration Тести - Реєстрація з невалідним
     await registrationPage.emailInput.fill(email);
     await registrationPage.passwordInput.fill(password);
     await registrationPage.passwordRepeatInput.fill(passwordRepeat);
-    await page.locator('div').filter({ hasText: 'Security Question' }).nth(4).click();
-    await page.getByRole('option', { name: 'Mother\'s maiden name?' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).click();
-    await page.getByRole('textbox', { name: 'Field for the answer to the' }).fill(securityAnswer);
+    await page
+      .locator('div')
+      .filter({ hasText: 'Security Question' })
+      .nth(4)
+      .click();
+    await page.getByRole('option', { name: "Mother's maiden name?" }).click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .click();
+    await page
+      .getByRole('textbox', { name: 'Field for the answer to the' })
+      .fill(securityAnswer);
     await page.waitForTimeout(500);
 
     // Перевірка, що кнопка disabled при невалідному email
@@ -249,7 +307,9 @@ describe('Registration Тести - Реєстрація з невалідним
 });
 
 describe('Registration Тести - Валідація полів', () => {
-  test('@registration @validation Сценарій Валідація поля email', async ({ page }) => {
+  test('@registration @validation Сценарій Валідація поля email', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Валідація поля email');
 
     const registrationPage = new RegistrationPage(page);
@@ -270,7 +330,9 @@ describe('Registration Тести - Валідація полів', () => {
     console.log('✅ Поле email має правильний тип (text)');
   });
 
-  test('@registration @validation Сценарій Валідація поля password', async ({ page }) => {
+  test('@registration @validation Сценарій Валідація поля password', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Валідація поля password');
 
     const registrationPage = new RegistrationPage(page);
@@ -291,7 +353,9 @@ describe('Registration Тести - Валідація полів', () => {
     console.log('✅ Поле password має правильний тип (password)');
   });
 
-  test('@registration @validation Сценарій Валідація поля passwordRepeat', async ({ page }) => {
+  test('@registration @validation Сценарій Валідація поля passwordRepeat', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Валідація поля passwordRepeat');
 
     const registrationPage = new RegistrationPage(page);
@@ -312,7 +376,9 @@ describe('Registration Тести - Валідація полів', () => {
     console.log('✅ Поле passwordRepeat має правильний тип (password)');
   });
 
-  test('@registration @validation Сценарій Валідація поля securityQuestion', async ({ page }) => {
+  test('@registration @validation Сценарій Валідація поля securityQuestion', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Валідація поля securityQuestion');
 
     const registrationPage = new RegistrationPage(page);
@@ -328,12 +394,16 @@ describe('Registration Тести - Валідація полів', () => {
     console.log('✅ Поле securityQuestion доступне для вибору');
 
     // Перевірка, що це select елемент (Angular Material mat-select)
-    const tagName = await securityQuestionSelect.evaluate(el => el.tagName.toLowerCase());
+    const tagName = await securityQuestionSelect.evaluate((el) =>
+      el.tagName.toLowerCase()
+    );
     expect(tagName).toBe('mat-select');
     console.log('✅ Поле securityQuestion має правильний тип (mat-select)');
   });
 
-  test('@registration @validation Сценарій Валідація поля securityAnswer', async ({ page }) => {
+  test('@registration @validation Сценарій Валідація поля securityAnswer', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Валідація поля securityAnswer');
 
     const registrationPage = new RegistrationPage(page);
@@ -349,7 +419,9 @@ describe('Registration Тести - Валідація полів', () => {
     console.log('✅ Поле securityAnswer доступне для вводу');
   });
 
-  test('@registration @validation Сценарій Валідація кнопки register', async ({ page }) => {
+  test('@registration @validation Сценарій Валідація кнопки register', async ({
+    page,
+  }) => {
     console.log('📝 Сценарій: Валідація кнопки register');
 
     const registrationPage = new RegistrationPage(page);
@@ -365,7 +437,9 @@ describe('Registration Тести - Валідація полів', () => {
 
     // Кнопка може бути disabled на порожній формі - це нормальна валідація
     const isDisabled = await registerButton.isDisabled();
-    console.log(`📋 Кнопка стан: ${isDisabled ? 'disabled (порожня форма)' : 'enabled'}`);
+    console.log(
+      `📋 Кнопка стан: ${isDisabled ? 'disabled (порожня форма)' : 'enabled'}`
+    );
 
     // Перевірка типу елемента (button)
     const buttonType = await registerButton.getAttribute('type');
@@ -373,8 +447,10 @@ describe('Registration Тести - Валідація полів', () => {
     console.log('✅ Кнопка register має правильний тип (submit)');
   });
 
-  test('@registration @validation Сценарій Перевірка обов\'язкових полів', async ({ page }) => {
-    console.log('📝 Сценарій: Перевірка обов\'язкових полів');
+  test("@registration @validation Сценарій Перевірка обов'язкових полів", async ({
+    page,
+  }) => {
+    console.log("📝 Сценарій: Перевірка обов'язкових полів");
 
     const registrationPage = new RegistrationPage(page);
 
@@ -388,7 +464,9 @@ describe('Registration Тести - Валідація полів', () => {
     console.log('✅ Кнопка disabled на порожній формі - валідація працює');
 
     // Спроба клікнути на disabled кнопку не призведе до відправки
-    await registrationPage.registerButton.click({ timeout: 1000 }).catch(() => {});
+    await registrationPage.registerButton
+      .click({ timeout: 1000 })
+      .catch(() => {});
     await page.waitForTimeout(1000);
 
     // Перевірка, що реєстрація не відбулася

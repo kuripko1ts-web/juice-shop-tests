@@ -5,6 +5,7 @@
 ### ✅ Що вже є:
 
 #### API Тести (`api-tests/api-tests.js`)
+
 - **5 базових тестів:**
   - GetProducts - отримання списку продуктів
   - RegisterUser - реєстрація нового користувача
@@ -13,7 +14,9 @@
   - GetUserInfo - отримання інформації про користувача
 
 #### UI Тести (Playwright)
+
 **Smoke тести (`smoke.spec.js`):**
+
 - Логін валідного користувача
 - Логін заблокованого користувача
 - Логін з неправильним паролем
@@ -23,22 +26,26 @@
 - Розлогіровка
 
 **Regression тести (`reg.spec.js`):**
+
 - Checkout з різними методами оплати
 - Checkout з One Day Delivery
 - Checkout з Fast Delivery
 - Checkout з Standard Delivery
 
 #### Page Object Model
+
 - `BasePage.js` - базова сторінка
 - `LoginPage.js` - сторінка логіну
 - `CartPage.js` - сторінка кошика
 
 #### CI/CD
+
 - GitHub Actions workflows для API та UI тестів
 - Автоматичний запуск на push/PR
 - Завантаження artifacts (звіти)
 
 #### Документація
+
 - README.md
 - CI_CD_GUIDE.txt
 - LOCAL_SETUP.md
@@ -50,6 +57,7 @@
 ### 1. API Тести
 
 #### Критичні прогалини:
+
 - **Відсутній тестовий фреймворк** - тести написані без Jest/Mocha/Chai
 - **Відсутні assertions** - немає перевірки результатів (тільки логування)
 - **Відсутні негативні тести API:**
@@ -76,6 +84,7 @@
 - **Відсутні тести для data validation**
 
 #### Рекомендовані API тести:
+
 ```
 api-tests/
 ├── tests/
@@ -118,6 +127,7 @@ api-tests/
 ### 2. UI Тести
 
 #### Критичні прогалини:
+
 - **Неповний Page Object Model:**
   - Немає `ProductPage.js` - сторінка товарів
   - Немає `CheckoutPage.js` - сторінка оформлення замовлення
@@ -143,6 +153,7 @@ api-tests/
 - **Відсутні тести для локалізації**
 
 #### Рекомендовані UI тести:
+
 ```
 ui-tests2/
 ├── tests/
@@ -186,9 +197,11 @@ ui-tests2/
 ### 3. Security Тести
 
 #### Критичні прогалини:
+
 OWASP Juice Shop - це вразливий додаток, але немає тестів для вразливостей!
 
 **Відсутні тести для OWASP Top 10:**
+
 - **A01:2021 – Broken Access Control**
   - Privilege escalation
   - Horizontal/vertical privilege escalation
@@ -217,6 +230,7 @@ OWASP Juice Shop - це вразливий додаток, але немає т�
   - SSRF attacks
 
 #### Рекомендовані security тести:
+
 ```
 security-tests/
 ├── owasp-top10/
@@ -241,6 +255,7 @@ security-tests/
 ### 4. Performance Тести
 
 #### Відсутні:
+
 - Load testing (навантажувальні тести)
 - Stress testing (стрес-тести)
 - Spike testing (тестування пікового навантаження)
@@ -250,6 +265,7 @@ security-tests/
 - Performance testing для UI (page load time)
 
 #### Рекомендовані performance тести:
+
 ```
 performance-tests/
 ├── load/
@@ -268,6 +284,7 @@ performance-tests/
 ### 5. Інтеграційні тести
 
 #### Відсутні:
+
 - Тести для інтеграції з payment gateway
 - Тести для інтеграції з email service
 - Тести для інтеграції з database
@@ -278,12 +295,14 @@ performance-tests/
 ### 6. Test Data Management
 
 #### Проблеми:
+
 - Тестові дані хардкоджені в тестах
 - Відсутні fixtures
 - Відсутні test data factories
 - Відсутні data cleanup procedures
 
 #### Рекомендовані рішення:
+
 ```
 test-data/
 ├── fixtures/
@@ -304,6 +323,7 @@ test-data/
 ### 7. Test Reporting & Analytics
 
 #### Відсутні:
+
 - Allure reports
 - Custom metrics dashboard
 - Test trend analysis
@@ -316,6 +336,7 @@ test-data/
 ### 8. Code Quality & Best Practices
 
 #### Проблеми:
+
 - **Відсутні unit тести для Page Objects**
 - **Відсутні linting (ESLint)**
 - **Відсутні formatting (Prettier)**
@@ -329,6 +350,7 @@ test-data/
 ### 9. Test Environment Management
 
 #### Проблеми:
+
 - Відсутні різні середовища (dev, staging, prod)
 - Відсутні environment variables management
 - Відсутні test data isolation
@@ -339,6 +361,7 @@ test-data/
 ### 10. Advanced Features
 
 #### Відсутні:
+
 - Visual regression testing
 - API mocking/stubbing
 - Test data generation
@@ -410,6 +433,7 @@ test-data/
 ## 📋 План дій
 
 ### Етап 1: API Тести (1-2 тижні)
+
 - [ ] Переписати API тести з Jest
 - [ ] Додати assertions
 - [ ] Додати негативні тести
@@ -417,38 +441,45 @@ test-data/
 - [ ] Додати auth tests
 
 ### Етап 2: Page Object Model (1 тиждень)
+
 - [ ] Створити ProductPage.js
 - [ ] Створити CheckoutPage.js
 - [ ] Створити SearchPage.js
 - [ ] Створити ProfilePage.js
 
 ### Етап 3: Security Тести (2 тижні)
+
 - [ ] SQL Injection тести
 - [ ] XSS тести
 - [ ] Auth bypass тести
 - [ ] OWASP Top 10 тести
 
 ### Етап 4: Функціональні UI тести (1-2 тижні)
+
 - [ ] Реєстрація
 - [ ] Пошук
 - [ ] Фільтрація
 - [ ] Wishlist
 
 ### Етап 5: Test Data Management (1 тиждень)
+
 - [ ] Fixtures
 - [ ] Factories
 - [ ] Data cleanup
 
 ### Етап 6: Code Quality (1 тиждень)
+
 - [ ] ESLint
 - [ ] Prettier
 - [ ] Pre-commit hooks
 
 ### Етап 7: Performance Тести (1 тиждень)
+
 - [ ] API response time
 - [ ] Page load time
 
 ### Етап 8: Advanced Features (2-3 тижні)
+
 - [ ] Visual regression
 - [ ] Multi-browser
 - [ ] Mobile testing
@@ -459,6 +490,7 @@ test-data/
 ## 🔍 Технічний борг
 
 ### Поточні проблеми:
+
 1. **API тести без assertions** - тільки логування, без перевірки результатів
 2. **Hardcoded timeouts** - багато `waitForTimeout(1000)` замість правильних очікувань
 3. **Skip тести в коді** - є закоментовані/skip тести
@@ -471,6 +503,7 @@ test-data/
 ## 📈 Метрики покриття
 
 ### Поточне покриття (оцінка):
+
 - **API:** ~20% (базові CRUD)
 - **UI:** ~30% (smoke + basic regression)
 - **Security:** 0%
@@ -478,6 +511,7 @@ test-data/
 - **Integration:** 0%
 
 ### Цільове покриття:
+
 - **API:** 70-80%
 - **UI:** 60-70%
 - **Security:** 50-60% (OWASP Top 10)
@@ -491,6 +525,7 @@ test-data/
 Поточний портфоліо має **базовий рівень** автоматизації, але потребує значного розширення для демонстрації повноцінних навичок QA Automation Engineer.
 
 **Ключові недоліки:**
+
 1. Відсутність proper test framework для API
 2. Відсутність security тестів (критично для OWASP Juice Shop)
 3. Неповний Page Object Model

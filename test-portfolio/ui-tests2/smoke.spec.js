@@ -10,9 +10,10 @@ const CartPage = require('./pages/CartPage');
 const BASE_URL = 'http://localhost:3000';
 
 describe('Smoke Тести - Сценарії логіну', () => {
-
   // Сценарій 1: Логін валідного користувача
-  test('@smoke @auth Сценарій Логін валідного користувача', async ({ page }) => {
+  test('@smoke @auth Сценарій Логін валідного користувача', async ({
+    page,
+  }) => {
     console.log('🔐 Сценарій: Логін валідного користувача');
 
     // Використання Page Object Model
@@ -35,18 +36,19 @@ describe('Smoke Тести - Сценарії логіну', () => {
     const url = page.url();
     await page.getByRole('button', { name: 'Show/hide account menu' }).click();
     await page.getByRole('menuitem', { name: 'Go to user profile' }).click();
-    await expect(page.getByRole('heading', { name: 'User Profile' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'User Profile' })
+    ).toBeVisible();
 
     //expect(url).toContain('search');
     console.log('✅ Користувач бачить сторінку профіля після логіну');
 
     await page.goto(`${BASE_URL}/#/search`);
     // Перевірка наявності продуктів на сторінці
-    const products = await page.locator('.product-card').or(
-      page.locator('[class*="product"]')
-    ).or(
-      page.locator('mat-card')
-    );
+    const products = await page
+      .locator('.product-card')
+      .or(page.locator('[class*="product"]'))
+      .or(page.locator('mat-card'));
     const productCount = await products.count();
     expect(productCount).toBeGreaterThan(0);
     console.log(`✅ Знайдено ${productCount} продуктів на сторінці інвентарю`);
@@ -54,7 +56,9 @@ describe('Smoke Тести - Сценарії логіну', () => {
   });
 
   // Сценарій 2: Логін заблокованого користувача
-  test('@smoke @auth @negative Сценарій Логін заблокованого користувача', async ({ page }) => {
+  test('@smoke @auth @negative Сценарій Логін заблокованого користувача', async ({
+    page,
+  }) => {
     console.log('🔐 Сценарій: Логін заблокованого користувача');
 
     // Використання Page Object Model
@@ -76,20 +80,21 @@ describe('Smoke Тести - Сценарії логіну', () => {
     console.log('✅ Користувач залишився на сторінці логіну');
 
     // Перевірка наявності повідомлення про помилку
-    const errorMessage = await page.locator('.error').or(
-      page.locator('[class*="error"]')
-    ).or(
-      page.locator('text=blocked')
-    ).or(
-      page.locator('text=locked')
-    ).first();
+    const errorMessage = await page
+      .locator('.error')
+      .or(page.locator('[class*="error"]'))
+      .or(page.locator('text=blocked'))
+      .or(page.locator('text=locked'))
+      .first();
 
     await expect(errorMessage).toBeVisible();
     console.log('✅ Повідомлення про помилку відображається');
   });
 
   // Сценарій 3: Логін з неправильним паролем
-  test('@smoke @auth @negative Сценарій Логін з неправильним паролем', async ({ page }) => {
+  test('@smoke @auth @negative Сценарій Логін з неправильним паролем', async ({
+    page,
+  }) => {
     console.log('🔐 Сценарій: Логін з неправильним паролем');
 
     // Використання Page Object Model
@@ -110,11 +115,11 @@ describe('Smoke Тести - Сценарії логіну', () => {
     console.log('✅ Користувач залишився на сторінці логіну');
 
     // Перевірка наявності повідомлення про помилку
-    const errorMessage = await page.locator('.error').or(
-      page.locator('[class*="error"]')
-    ).or(
-      page.locator('text=Invalid')
-    ).first();
+    const errorMessage = await page
+      .locator('.error')
+      .or(page.locator('[class*="error"]'))
+      .or(page.locator('text=Invalid'))
+      .first();
 
     await expect(errorMessage).toBeVisible();
     console.log('✅ Повідомлення про помилку відображається');
@@ -123,7 +128,9 @@ describe('Smoke Тести - Сценарії логіну', () => {
 
 describe('Smoke', () => {
   // Сценарій 4: Додавання другого товару в кошик
-  test('@smoke @cart Сценарій Додавання другого товару в кошик', async ({ page }) => {
+  test('@smoke @cart Сценарій Додавання другого товару в кошик', async ({
+    page,
+  }) => {
     console.log('🛒 Сценарій: Додавання другого товару в кошик');
 
     // Логін перед додаванням товару
@@ -157,14 +164,16 @@ describe('Smoke', () => {
     await page.waitForTimeout(2000);
 
     await loginPage.logout();
-    console.log('✅ Тест завершено: товар додано в кошик та виконано розлогіровку');
+    console.log(
+      '✅ Тест завершено: товар додано в кошик та виконано розлогіровку'
+    );
   });
   // виделення з кошика
   test.skip('Сценарій Видалення товару @delete', async ({ page }) => {
-    console.log('🛒 Сценарій: Видалення ')
+    console.log('🛒 Сценарій: Видалення ');
     // Логін перед додаванням товару
     const loginPage = new LoginPage(page);
-    //await this.page.pause(); 
+    //await this.page.pause();
     await loginPage.goto();
     await page.waitForTimeout(1000);
     await loginPage.isLoaded();
@@ -199,14 +208,12 @@ describe('Smoke', () => {
     //       console.log(`📦 Кількість товарів після clearCart: ${count}`);
     //     }
     await loginPage.logout();
-
-
   });
 
-
-
   // Сценарій 5: Видалення всіх товарів з кошика
-  test('@smoke @cart Сценарій Видалення всіх товарів з кошика', async ({ page }) => {
+  test('@smoke @cart Сценарій Видалення всіх товарів з кошика', async ({
+    page,
+  }) => {
     console.log('🛒 Сценарій: Видалення всіх товарів з кошика');
 
     // Логін перед додаванням товару
@@ -247,14 +254,18 @@ describe('Smoke', () => {
     //wait cartPage.verifyCartEmpty();
 
     await loginPage.logout();
-    console.log('✅ Тест завершено: всі товари видалено з кошика та виконано розлогіровку');
+    console.log(
+      '✅ Тест завершено: всі товари видалено з кошика та виконано розлогіровку'
+    );
   });
 });
 
 describe('Smoke Тести - Checkout', () => {
-  test('@smoke @checkout Сценарій Checkout happy path (1 item, One Day Delivery)', async ({ page }) => {
+  test('@smoke @checkout Сценарій Checkout happy path (1 item, One Day Delivery)', async ({
+    page,
+  }) => {
     console.log('🛒 Сценарій: Checkout happy path (1 item, One Day Delivery)');
-    
+
     // Логін
     const loginPage = new LoginPage(page);
     await loginPage.goto();
@@ -275,20 +286,23 @@ describe('Smoke Тести - Checkout', () => {
     // Виконання checkout через POM
     await cartPage.checkout();
 
-
     // Перевірка повідомлення про завершення замовлення
     // await expect(page.getByText(/order complete|thank you|дякуємо|замовлення успішне/i)).toBeVisible();
     console.log('✅ Order complete message shown');
 
     // Логаут
     await loginPage.logout();
-    console.log('✅ Тест завершено: checkout виконано та виконано розлогіровку');
+    console.log(
+      '✅ Тест завершено: checkout виконано та виконано розлогіровку'
+    );
   });
 });
 
 describe('Smoke Тести - Сценарій розлогіровки', () => {
   // Сценарій: Розлогіровка користувача
-  test('@smoke @auth @logount Сценарій Розлогіровка користувача', async ({ page }) => {
+  test('@smoke @auth @logount Сценарій Розлогіровка користувача', async ({
+    page,
+  }) => {
     console.log('🔐 Сценарій: Розлогіровка користувача');
 
     // Логін перед розлогіровкою
@@ -316,7 +330,9 @@ describe('Smoke Тести - Сценарій розлогіровки', () => {
   });
 });
 
-test.skip('@smoke  @checkout Сценарій Checkout happy path (', async ({ page }) => {
+test.skip('@smoke  @checkout Сценарій Checkout happy path (', async ({
+  page,
+}) => {
   console.log('🛒 Сценарій: Сценарій Checkout happy path');
 
   // Логін перед додаванням товару
@@ -355,5 +371,7 @@ test.skip('@smoke  @checkout Сценарій Checkout happy path (', async ({ p
   //wait cartPage.verifyCartEmpty();
 
   await loginPage.logout();
-  console.log('✅ Тест завершено: всі товари видалено з кошика та виконано розлогіровку');
+  console.log(
+    '✅ Тест завершено: всі товари видалено з кошика та виконано розлогіровку'
+  );
 });

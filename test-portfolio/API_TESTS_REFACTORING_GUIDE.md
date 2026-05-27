@@ -9,6 +9,7 @@
 ## 🔧 КРОК 1: Встановлення Jest та залежностей
 
 ### Що робити:
+
 Встановити Jest та необхідні пакети для API тестування.
 
 ### Як це зробити:
@@ -30,6 +31,7 @@ npm install --save-dev jest-extended
 ```
 
 ### Чому це потрібно:
+
 - **Jest** - потужний тестовий фреймворк від Facebook
 - **axios** - HTTP клієнт для API запитів
 - **supertest** - для тестування HTTP endpoints (опціонально)
@@ -41,6 +43,7 @@ npm install --save-dev jest-extended
 ## 📁 КРОК 2: Створення структури папок
 
 ### Що робити:
+
 Створити правильну структуру папок для організації тестів.
 
 ### Як це зробити:
@@ -59,6 +62,7 @@ mkdir helpers
 ```
 
 ### Результат:
+
 ```
 api-tests/
 ├── tests/
@@ -87,6 +91,7 @@ api-tests/
 ```
 
 ### Чому це потрібно:
+
 - **Організація** - тести розділені за функціональністю
 - **Масштабованість** - легко додавати нові тести
 - **Читабельність** - зрозуміла структура проекту
@@ -96,11 +101,13 @@ api-tests/
 ## 📄 КРОК 3: Створення fixtures (тестових даних)
 
 ### Що робити:
+
 Створити файли з тестовими даними для використання в тестах.
 
 ### Як це зробити:
 
 #### Створити `fixtures/users.json`:
+
 ```json
 {
   "validAdmin": {
@@ -132,6 +139,7 @@ api-tests/
 ```
 
 #### Створити `fixtures/products.json`:
+
 ```json
 {
   "validProduct": {
@@ -149,6 +157,7 @@ api-tests/
 ```
 
 ### Чому це потрібно:
+
 - **Reusability** - тестові дані використовуються в багатьох тестах
 - **Maintainability** - легко змінювати тестові дані
 - **Separation** - дані відокремлені від логіки тестів
@@ -158,11 +167,13 @@ api-tests/
 ## 🔧 КРОК 4: Створення API Client helper
 
 ### Що робити:
+
 Створити helper клас для роботи з API.
 
 ### Як це зробити:
 
 #### Створити `helpers/api-client.js`:
+
 ```javascript
 const axios = require('axios');
 
@@ -171,9 +182,9 @@ class ApiClient {
     this.client = axios.create({
       baseURL,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      timeout: 10000
+      timeout: 10000,
     });
   }
 
@@ -235,6 +246,7 @@ module.exports = ApiClient;
 ```
 
 ### Чому це потрібно:
+
 - **Encapsulation** - вся логіка HTTP запитів в одному місці
 - **Reusability** - використовується в усіх тестах
 - **Maintainability** - легко змінювати базову URL, заголовки тощо
@@ -245,11 +257,13 @@ module.exports = ApiClient;
 ## 🔐 КРОК 5: Створення Auth Helper
 
 ### Що робити:
+
 Створити helper для аутентифікації та управління токенами.
 
 ### Як це зробити:
 
 #### Створити `helpers/auth-helper.js`:
+
 ```javascript
 const ApiClient = require('./api-client');
 
@@ -260,7 +274,10 @@ class AuthHelper {
   }
 
   async loginAsAdmin() {
-    const response = await this.apiClient.login('admin@juice-sh.op', 'admin123');
+    const response = await this.apiClient.login(
+      'admin@juice-sh.op',
+      'admin123'
+    );
     this.authToken = response.data.authentication.token;
     this.apiClient.setAuthToken(this.authToken);
     return this.authToken;
@@ -299,6 +316,7 @@ module.exports = AuthHelper;
 ```
 
 ### Чому це потрібно:
+
 - **Auth management** - централізоване управління логіном/логаутом
 - **Token handling** - автоматичне встановлення токенів
 - **Convenience** - прості методи для різних сценаріїв аутентифікації
@@ -308,11 +326,13 @@ module.exports = AuthHelper;
 ## ⚙️ КРОК 6: Налаштування Jest
 
 ### Що робити:
+
 Створити конфігурацію Jest.
 
 ### Як це зробити:
 
 #### Створити `jest.config.js`:
+
 ```javascript
 module.exports = {
   testEnvironment: 'node',
@@ -320,18 +340,17 @@ module.exports = {
   collectCoverageFrom: [
     'helpers/**/*.js',
     'tests/**/*.js',
-    '!**/node_modules/**'
+    '!**/node_modules/**',
   ],
-  testMatch: [
-    '**/tests/**/*.spec.js'
-  ],
+  testMatch: ['**/tests/**/*.spec.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testTimeout: 10000,
-  verbose: true
+  verbose: true,
 };
 ```
 
 #### Створити `jest.setup.js`:
+
 ```javascript
 // Глобальні налаштування перед запуском тестів
 require('jest-extended');
@@ -341,6 +360,7 @@ global.BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 ```
 
 ### Чому це потрібно:
+
 - **Конфігурація** - налаштування поведінки Jest
 - **Coverage** - автоматичний збір метрик покриття
 - **Timeout** - налаштування тайм-аутів для тестів
@@ -351,11 +371,13 @@ global.BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 ## 📝 КРОК 7: Переписування тестів - Auth
 
 ### Що робити:
+
 Переписати тести для аутентифікації з використанням Jest та assertions.
 
 ### Як це зробити:
 
 #### Створити `tests/auth/login.spec.js`:
+
 ```javascript
 const ApiClient = require('../../helpers/api-client');
 const AuthHelper = require('../../helpers/auth-helper');
@@ -408,7 +430,9 @@ describe('Auth API - Login', () => {
     const wrongPassword = 'wrongpassword';
 
     // Act
-    const response = await apiClient.login(email, wrongPassword).catch(err => err.response);
+    const response = await apiClient
+      .login(email, wrongPassword)
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(401);
@@ -420,7 +444,9 @@ describe('Auth API - Login', () => {
     const { email, password } = users.invalidUser;
 
     // Act
-    const response = await apiClient.login(email, password).catch(err => err.response);
+    const response = await apiClient
+      .login(email, password)
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(401);
@@ -429,6 +455,7 @@ describe('Auth API - Login', () => {
 ```
 
 #### Створити `tests/auth/register.spec.js`:
+
 ```javascript
 const ApiClient = require('../../helpers/api-client');
 const AuthHelper = require('../../helpers/auth-helper');
@@ -448,7 +475,7 @@ describe('Auth API - Register', () => {
     const timestamp = Date.now();
     const userData = {
       ...users.newUser,
-      email: users.newUser.email.replace('{{timestamp}}', timestamp)
+      email: users.newUser.email.replace('{{timestamp}}', timestamp),
     };
 
     // Act
@@ -467,7 +494,9 @@ describe('Auth API - Register', () => {
     const userData = users.validUser;
 
     // Act
-    const response = await apiClient.register(userData).catch(err => err.response);
+    const response = await apiClient
+      .register(userData)
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(400);
@@ -477,11 +506,13 @@ describe('Auth API - Register', () => {
     // Arrange
     const invalidData = {
       email: '',
-      password: ''
+      password: '',
     };
 
     // Act
-    const response = await apiClient.register(invalidData).catch(err => err.response);
+    const response = await apiClient
+      .register(invalidData)
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(400);
@@ -490,6 +521,7 @@ describe('Auth API - Register', () => {
 ```
 
 ### Чому це потрібно:
+
 - **Assertions** - перевірка результатів з proper expectations
 - **Structure** - Arrange-Act-Assert pattern
 - **Reusability** - використання helpers та fixtures
@@ -500,11 +532,13 @@ describe('Auth API - Register', () => {
 ## 📦 КРОК 8: Переписування тестів - Products
 
 ### Що робити:
+
 Переписати тести для продуктів.
 
 ### Як це зробити:
 
 #### Створити `tests/products/get-products.spec.js`:
+
 ```javascript
 const ApiClient = require('../../helpers/api-client');
 
@@ -551,7 +585,9 @@ describe('Products API', () => {
     const nonExistentId = 999999;
 
     // Act
-    const response = await apiClient.getProductById(nonExistentId).catch(err => err.response);
+    const response = await apiClient
+      .getProductById(nonExistentId)
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(404);
@@ -560,6 +596,7 @@ describe('Products API', () => {
 ```
 
 ### Чому це потрібно:
+
 - **Coverage** - покриття CRUD операцій для продуктів
 - **Edge cases** - тестування неіснуючих ID
 - **Structure** - перевірка структури відповідей
@@ -569,11 +606,13 @@ describe('Products API', () => {
 ## 🛒 КРОК 9: Переписування тестів - Basket
 
 ### Що робити:
+
 Переписати тести для кошика з аутентифікацією.
 
 ### Як це зробити:
 
 #### Створити `tests/basket/get-basket.spec.js`:
+
 ```javascript
 const ApiClient = require('../../helpers/api-client');
 const AuthHelper = require('../../helpers/auth-helper');
@@ -606,7 +645,7 @@ describe('Basket API', () => {
     // Arrange
     const basketItem = {
       ProductId: 1,
-      quantity: 1
+      quantity: 1,
     };
 
     // Act
@@ -619,7 +658,10 @@ describe('Basket API', () => {
 
   test('DELETE /api/BasketItems/:id - видалення товару з кошика', async () => {
     // Arrange - спочатку додати товар
-    const addResponse = await apiClient.addToBasket({ ProductId: 1, quantity: 1 });
+    const addResponse = await apiClient.addToBasket({
+      ProductId: 1,
+      quantity: 1,
+    });
     const itemId = addResponse.data.data.id;
 
     // Act - видалити товар
@@ -632,6 +674,7 @@ describe('Basket API', () => {
 ```
 
 ### Чому це потрібно:
+
 - **Auth** - тести з аутентифікацією
 - **CRUD** - повне покриття операцій кошика
 - **Setup/Teardown** - правильна ініціалізація та очищення
@@ -641,11 +684,13 @@ describe('Basket API', () => {
 ## ❌ КРОК 10: Додавання негативних тестів
 
 ### Що робити:
+
 Додати тести для негативних сценаріїв та edge cases.
 
 ### Як це зробити:
 
 #### Створити `tests/auth/negative.spec.js`:
+
 ```javascript
 const ApiClient = require('../../helpers/api-client');
 
@@ -658,7 +703,7 @@ describe('Auth API - Negative Tests', () => {
 
   test('POST /rest/user/login - пусті поля', async () => {
     // Act
-    const response = await apiClient.login('', '').catch(err => err.response);
+    const response = await apiClient.login('', '').catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(401);
@@ -669,7 +714,9 @@ describe('Auth API - Negative Tests', () => {
     const sqlInjection = "' OR '1'='1";
 
     // Act
-    const response = await apiClient.login(sqlInjection, sqlInjection).catch(err => err.response);
+    const response = await apiClient
+      .login(sqlInjection, sqlInjection)
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(401);
@@ -680,7 +727,9 @@ describe('Auth API - Negative Tests', () => {
     const xssPayload = '<script>alert("xss")</script>';
 
     // Act
-    const response = await apiClient.login(xssPayload, 'password').catch(err => err.response);
+    const response = await apiClient
+      .login(xssPayload, 'password')
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(401);
@@ -693,11 +742,13 @@ describe('Auth API - Negative Tests', () => {
       email: longEmail,
       password: 'Test123!',
       passwordRepeat: 'Test123!',
-      securityQuestion: { id: 1, answer: 'Test' }
+      securityQuestion: { id: 1, answer: 'Test' },
     };
 
     // Act
-    const response = await apiClient.register(userData).catch(err => err.response);
+    const response = await apiClient
+      .register(userData)
+      .catch((err) => err.response);
 
     // Assert
     expect(response.status).toBe(400);
@@ -706,6 +757,7 @@ describe('Auth API - Negative Tests', () => {
 ```
 
 ### Чому це потрібно:
+
 - **Security** - тестування вразливостей
 - **Validation** - перевірка валідації даних
 - **Edge cases** - граничні значення
@@ -715,6 +767,7 @@ describe('Auth API - Negative Tests', () => {
 ## 📦 КРОК 11: Оновлення package.json
 
 ### Що робити:
+
 Оновити скрипти в package.json для запуску Jest тестів.
 
 ### Як це зробити:
@@ -742,6 +795,7 @@ describe('Auth API - Negative Tests', () => {
 ```
 
 ### Чому це потрібно:
+
 - **Convenience** - прості команди для запуску тестів
 - **Coverage** - команда для збору метрик
 - **Watch mode** - автоматичний перезапуск при змінах
@@ -751,57 +805,60 @@ describe('Auth API - Negative Tests', () => {
 ## 🔄 КРОК 12: Оновлення CI/CD
 
 ### Що робити:
+
 Оновити GitHub Actions workflow для Jest тестів.
 
 ### Як це зробити:
 
 #### Оновити `.github/workflows/api-tests.yml`:
+
 ```yaml
 name: API Tests
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   workflow_dispatch:
 
 jobs:
   api-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        
-    - name: Install dependencies
-      working-directory: ./api-tests
-      run: npm install
-      
-    - name: Start Juice Shop with Docker
-      run: |
-        docker run -d -p 3000:3000 bkimminich/juice-shop
-        sleep 15
-        
-    - name: Run API tests
-      working-directory: ./api-tests
-      run: npm test
-      
-    - name: Upload coverage
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: api-tests/coverage/
-        retention-days: 30
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./api-tests
+        run: npm install
+
+      - name: Start Juice Shop with Docker
+        run: |
+          docker run -d -p 3000:3000 bkimminich/juice-shop
+          sleep 15
+
+      - name: Run API tests
+        working-directory: ./api-tests
+        run: npm test
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: api-tests/coverage/
+          retention-days: 30
 ```
 
 ### Чому це потрібно:
+
 - **CI/CD** - автоматичний запуск Jest тестів
 - **Coverage** - завантаження звітів покриття
 - **Integration** - інтеграція з існуючим workflow
@@ -811,6 +868,7 @@ jobs:
 ## 🧪 КРОК 13: Запуск та перевірка тестів
 
 ### Що робити:
+
 Запустити тести та перевірити результати.
 
 ### Як це зробити:
@@ -835,6 +893,7 @@ npm run test:verbose
 ```
 
 ### Перевірка результатів:
+
 - Перевірте що всі тести проходять
 - Перевірте coverage звіт в папці `coverage/`
 - Перевірте що негативні тести працюють
@@ -844,6 +903,7 @@ npm run test:verbose
 ## 📊 КРОК 14: Видалення старого коду
 
 ### Що робити:
+
 Видалити старий файл `api-tests.js` після успішної міграції.
 
 ### Як це зробити:
@@ -859,6 +919,7 @@ Remove-Item api-tests.js
 ```
 
 ### Чому це потрібно:
+
 - **Clean code** - видалення застарілого коду
 - **Confusion prevention** - уникнення плутанини між старим та новим кодом
 

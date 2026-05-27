@@ -7,7 +7,11 @@
     "test:ui": "cd ui-tests2 && npm test",
     "test:all": "npm run test:api && npm run test:ui",
     "start:server": "cd ../juice-shop && npm start",
-    "run:all": "powershell -ExecutionPolicy Bypass -File run-all.ps1"
+    "run:all": "powershell -ExecutionPolicy Bypass -File run-all.ps1",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "testing",
@@ -18,5 +22,8 @@
     "owasp"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1"
+  }
 }

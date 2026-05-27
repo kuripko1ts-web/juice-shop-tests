@@ -11,16 +11,16 @@ const BASE_URL = 'http://localhost:3000';
 // Create API client
 const createAPIClient = (token = null) => {
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   };
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
-  
+
   return axios.create({
     baseURL: BASE_URL,
     headers: headers,
-    validateStatus: () => true // Don't throw on any status code
+    validateStatus: () => true, // Don't throw on any status code
   });
 };
 
@@ -35,17 +35,16 @@ describe('Product Search API Tests - /rest/products/search', () => {
   // VALID SEARCH TESTS
   // ============================================
   describe('Valid Search Queries', () => {
-    
     // Test 1: Valid product name search - checks if server returns matching products
     test('should return products for valid search query', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'apple' }
+        params: { q: 'apple' },
       });
-      
+
       expect(response.status).toBe(200);
       expect(response.data).toBeDefined();
       expect(Array.isArray(response.data.data)).toBe(true);
-      
+
       // If results exist, verify they contain the search term
       if (response.data.data.length > 0) {
         const firstProduct = response.data.data[0];
@@ -57,9 +56,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 2: Case-insensitive search - checks if search is case-insensitive
     test('should handle case-insensitive search', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'APPLE' }
+        params: { q: 'APPLE' },
       });
-      
+
       expect(response.status).toBe(200);
       expect(response.data).toBeDefined();
       expect(Array.isArray(response.data.data)).toBe(true);
@@ -68,9 +67,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 3: Partial match search - checks if server returns products with partial matches
     test('should return products for partial match search', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'juice' }
+        params: { q: 'juice' },
       });
-      
+
       expect(response.status).toBe(200);
       expect(response.data).toBeDefined();
       expect(Array.isArray(response.data.data)).toBe(true);
@@ -81,16 +80,15 @@ describe('Product Search API Tests - /rest/products/search', () => {
   // EMPTY AND NULL SEARCH TESTS
   // ============================================
   describe('Empty and Null Search Queries', () => {
-    
     // Test 4: Empty search query - checks if server handles empty search gracefully
     test('should handle empty search query', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: '' }
+        params: { q: '' },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
-      
+
       // Empty search might return all products or empty array
       if (response.data.data) {
         expect(Array.isArray(response.data.data)).toBe(true);
@@ -100,9 +98,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 5: Null search parameter - checks if server handles null parameter
     test('should handle null search parameter', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: null }
+        params: { q: null },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -110,7 +108,7 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 6: Missing search parameter - checks if server handles missing parameter
     test('should handle missing search parameter', async () => {
       const response = await apiClient.get('/rest/products/search');
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -120,14 +118,13 @@ describe('Product Search API Tests - /rest/products/search', () => {
   // SPECIAL CHARACTERS AND UNICODE TESTS
   // ============================================
   describe('Special Characters and Unicode', () => {
-    
     // Test 7: Special characters in search - checks if server handles special characters
     test('should handle special characters in search', async () => {
       const specialChars = '!@#$%^&*()[]{}|/;<>';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: specialChars }
+        params: { q: specialChars },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -136,9 +133,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle unicode characters in search', async () => {
       const unicodeQuery = '🍎';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: unicodeQuery }
+        params: { q: unicodeQuery },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -147,9 +144,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle cyrillic characters in search', async () => {
       const cyrillicQuery = 'сок';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: cyrillicQuery }
+        params: { q: cyrillicQuery },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -157,9 +154,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 10: Numbers in search - checks if server handles numeric search queries
     test('should handle numeric search query', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: '123' }
+        params: { q: '123' },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -169,14 +166,13 @@ describe('Product Search API Tests - /rest/products/search', () => {
   // LENGTH LIMIT TESTS
   // ============================================
   describe('Search Query Length Limits', () => {
-    
     // Test 11: Extremely long search query - checks if server enforces maximum length
     test('should handle extremely long search query', async () => {
       const longQuery = 'a'.repeat(10000);
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: longQuery }
+        params: { q: longQuery },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -184,9 +180,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 12: Single character search - checks if server handles very short queries
     test('should handle single character search', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'a' }
+        params: { q: 'a' },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -196,14 +192,13 @@ describe('Product Search API Tests - /rest/products/search', () => {
   // INJECTION ATTACK TESTS
   // ============================================
   describe('Injection Attack Tests', () => {
-    
     // Test 13: SQL injection in search - checks if server prevents SQL injection
     test('should handle SQL injection in search query', async () => {
       const sqlInjection = "'; DROP TABLE Products--";
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: sqlInjection }
+        params: { q: sqlInjection },
       });
-      
+
       // Juice Shop is intentionally vulnerable, SQL injection causes server error
       // In a secure app, this should fail gracefully or return no results
       // Commented out to avoid console.warn in CI/CD
@@ -218,9 +213,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle SQL injection with UNION in search query', async () => {
       const unionInjection = "' UNION SELECT id,email,password FROM users--";
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: unionInjection }
+        params: { q: unionInjection },
       });
-      
+
       // Juice Shop is intentionally vulnerable, SQL injection causes server error
       // Commented out to avoid console.warn in CI/CD
       // if (response.status === 500) {
@@ -234,12 +229,12 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle XSS in search query', async () => {
       const xssPayload = '<script>alert("xss")</script>';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: xssPayload }
+        params: { q: xssPayload },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
-      
+
       // Check if XSS payload is reflected unsanitized
       // Commented out to avoid console.warn in CI/CD
       // if (response.status === 200 && response.data.data) {
@@ -254,12 +249,12 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle XSS with img tag in search query', async () => {
       const xssPayload = '<img src=x onerror=alert(1)>';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: xssPayload }
+        params: { q: xssPayload },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
-      
+
       // Check if XSS payload is reflected unsanitized
       // Commented out to avoid console.warn in CI/CD
       // if (response.status === 200 && response.data.data) {
@@ -274,9 +269,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle NoSQL injection in search query', async () => {
       const noSqlInjection = '{"$ne": null}';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: noSqlInjection }
+        params: { q: noSqlInjection },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -285,9 +280,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle command injection in search query', async () => {
       const commandInjection = '; cat /etc/passwd';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: commandInjection }
+        params: { q: commandInjection },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -297,13 +292,12 @@ describe('Product Search API Tests - /rest/products/search', () => {
   // EDGE CASES AND BOUNDARY TESTS
   // ============================================
   describe('Edge Cases and Boundary Tests', () => {
-    
     // Test 19: Search with spaces - checks if server handles spaces correctly
     test('should handle search with spaces', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'apple juice' }
+        params: { q: 'apple juice' },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -311,9 +305,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 20: Search with multiple spaces - checks if server handles multiple spaces
     test('should handle search with multiple spaces', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'apple   juice' }
+        params: { q: 'apple   juice' },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -321,20 +315,20 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 21: Search with leading/trailing spaces - checks if server trims spaces
     test('should handle search with leading and trailing spaces', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: '  apple  ' }
+        params: { q: '  apple  ' },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
 
     // Test 22: Search with SQL special characters - checks if server handles SQL chars
     test('should handle search with SQL special characters', async () => {
-      const sqlChars = "';--\"\\";
+      const sqlChars = '\';--"\\';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: sqlChars }
+        params: { q: sqlChars },
       });
-      
+
       // SQL special characters might cause server error in Juice Shop
       // Commented out to avoid console.warn in CI/CD
       // if (response.status === 500) {
@@ -348,9 +342,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle search with wildcard characters', async () => {
       const wildcardQuery = 'app*';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: wildcardQuery }
+        params: { q: wildcardQuery },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -359,9 +353,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     test('should handle search with regex pattern', async () => {
       const regexQuery = '[a-z]+';
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: regexQuery }
+        params: { q: regexQuery },
       });
-      
+
       expect(response.status).toBeLessThan(500);
       expect(response.data).toBeDefined();
     });
@@ -371,18 +365,17 @@ describe('Product Search API Tests - /rest/products/search', () => {
   // RESPONSE STRUCTURE TESTS
   // ============================================
   describe('Response Structure Validation', () => {
-    
     // Test 25: Valid search response structure - checks if response has correct structure
     test('should return correct response structure for valid search', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'apple' }
+        params: { q: 'apple' },
       });
-      
+
       expect(response.status).toBe(200);
       expect(response.data).toBeDefined();
       expect(response.data.data).toBeDefined();
       expect(Array.isArray(response.data.data)).toBe(true);
-      
+
       // If results exist, verify product structure
       if (response.data.data.length > 0) {
         const firstProduct = response.data.data[0];
@@ -400,9 +393,9 @@ describe('Product Search API Tests - /rest/products/search', () => {
     // Test 26: No results response - checks if server handles no results gracefully
     test('should return empty array for non-matching search', async () => {
       const response = await apiClient.get('/rest/products/search', {
-        params: { q: 'nonexistentproduct123456789' }
+        params: { q: 'nonexistentproduct123456789' },
       });
-      
+
       expect(response.status).toBe(200);
       expect(response.data).toBeDefined();
       expect(response.data.data).toBeDefined();
